@@ -235,12 +235,6 @@ body { font-family:'Noto Sans Lao','Phetsarath OT',Arial,sans-serif; background:
 
     <div class="card">
       <div class="ct">ຂໍ້ມູນລູກຄ້າ</div>
-      <div class="field" style="position:relative">
-        <label>🔍 ຄົ້ນຫາລູກຄ້າເກົ່າ (ຊື່ ຫຼື ເບີໂທ)</label>
-        <input type="text" id="f-customer-search" placeholder="ພິມຊື່ ຫຼື ເບີໂທ..." autocomplete="off" oninput="filterCustomers()" onfocus="filterCustomers()"/>
-        <div id="customer-suggest" class="cust-suggest"></div>
-        <div id="customer-status" class="cust-status"></div>
-      </div>
       <div class="field"><label>👤 ຊື່ລູກຄ້າ *</label><input type="text" id="f-name" placeholder="ກະລຸນາໃສ່ຊື່ລູກຄ້າ"/></div>
       <div class="field">
         <label>📞 ເບີໂທ *</label>
@@ -409,6 +403,9 @@ body { font-family:'Noto Sans Lao','Phetsarath OT',Arial,sans-serif; background:
         <span>ຄຳສັ່ງລ່າສຸດຈາກຖານຂໍ້ມູນປະຫວັດ</span>
         <span onclick="renderHistory()" style="font-size:.78rem;color:#7c3aed;text-decoration:underline;cursor:pointer;font-weight:600">🔄 ໂຫລດຄືນ</span>
       </div>
+      <div class="field" style="margin-bottom:10px">
+        <input type="text" id="hist-search" placeholder="🔍 ຄົ້ນຫາຊື່ ຫຼື ເບີໂທ..." autocomplete="off" oninput="filterHistory()"/>
+      </div>
       <div id="hiList"><p style="color:#94a3b8;font-size:.85rem">ຍັງບໍ່ມີຂໍ້ມູນ</p></div>
     </div>
   </div>
@@ -515,7 +512,6 @@ window.onload = function () {
   })();
   setPrintMode(printMode);
   buildProvinceList();
-  loadCustomers();
   // font warm-up
   var tmp = document.createElement('canvas');
   var ctx = tmp.getContext('2d');
@@ -590,102 +586,11 @@ function jsonp(url, timeoutMs){
   });
 }
 
-// ================================================================
-// ລູກຄ້າເກົ່າ — ດຶງລາຍຊື່ຈາກ Google Sheet ມາຄົ້ນຫາ/ດຶງຂໍ້ມູນອັດຕະໂນມັດ
-// ================================================================
-var CUSTOMERS = [];
-
-function loadCustomers(){
-  if (!SHEET_URL){
-    var s0 = document.getElementById('customer-status');
-    if (s0){ s0.textContent = 'ℹ ຍັງບໍ່ໄດ້ຕັ້ງ Google Sheet URL — ຄົ້ນຫາລູກຄ້າເກົ່າຈະໃຊ້ບໍ່ໄດ້'; s0.className='cust-status er'; s0.onclick=null; }
-    return;
-  }
-  var statusEl = document.getElementById('customer-status');
-  if (statusEl){ statusEl.textContent = '⏳ ກຳລັງໂຫລດລາຍຊື່ລູກຄ້າ...'; statusEl.className='cust-status'; statusEl.onclick=null; }
-  var sep = SHEET_URL.indexOf('?') >= 0 ? '&' : '?';
-  return jsonp(SHEET_URL + sep + 'action=customers')
-    .then(function(res){
-      if (!res || res.ok === false) throw new Error((res && res.error) || 'ຂໍ້ມູນຈາກ Sheet ບໍ່ຖືກຕ້ອງ');
-      CUSTOMERS = res.customers || [];
-      if (statusEl){
-        if (!CUSTOMERS.length){
-          statusEl.textContent = 'ℹ ຍັງບໍ່ມີຂໍ້ມູນລູກຄ້າໃນຖານຂໍ້ມູນ — ຈະປາກົດອັດຕະໂນມັດຫຼັງບັນທຶກອໍເດີທຳອິດ (ກົດເພື່ອໂຫລດຄືນ)';
-          statusEl.className = 'cust-status';
-          statusEl.onclick = loadCustomers;
-        } else {
-          statusEl.textContent = '';
-          statusEl.className = 'cust-status';
-          statusEl.onclick = null;
-        }
-      }
-    })
-    .catch(function(){
-      if (statusEl){
-        statusEl.textContent = '⚠ ໂຫລດລາຍຊື່ລູກຄ້າຈາກ Google Sheet ບໍ່ໄດ້ (ເຊັກອິນເຕີເນັດ/URL/Deploy) — ກົດເພື່ອລອງໃໝ່';
-        statusEl.className = 'cust-status er';
-        statusEl.onclick = loadCustomers;
-      }
-    });
-}
-
 function escapeHtml(s){
   return String(s).replace(/[&<>"']/g, function(c){
     return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
   });
 }
-
-function filterCustomers(){
-  var q = document.getElementById('f-customer-search').value.trim().toLowerCase();
-  var box = document.getElementById('customer-suggest');
-  if (!q){ box.classList.remove('show'); box.innerHTML=''; box.dataset.matches='[]'; return; }
-  var matches = CUSTOMERS.filter(function(c){
-    return (c.name && c.name.toLowerCase().indexOf(q)>=0) || (c.phone && String(c.phone).indexOf(q)>=0);
-  }).slice(0, 8);
-  box.dataset.matches = JSON.stringify(matches);
-  if (!matches.length){
-    if (CUSTOMERS.length){
-      // ມີຂໍ້ມູນລູກຄ້າຢູ່ແລ້ວ ແຕ່ຄົ້ນຫາບໍ່ພົບ — ບອກໃຫ້ຮູ້ວ່າຄົ້ນຫາແລ້ວ ບໍ່ແມ່ນລະບົບຄ້າງ
-      box.innerHTML = '<div class="cust-item" style="color:#94a3b8;cursor:default">ບໍ່ພົບລູກຄ້າທີ່ຕົງກັບ "'+escapeHtml(q)+'"</div>';
-      box.classList.add('show');
-    } else {
-      box.classList.remove('show'); box.innerHTML='';
-    }
-    return;
-  }
-  box.innerHTML = matches.map(function(c, i){
-    var addr = [c.village?('ບ້ານ'+c.village):'', c.district?('ເມືອງ'+c.district):'', c.province||''].filter(Boolean).join(', ');
-    return '<div class="cust-item" onclick="selectCustomer('+i+')">'+
-           '<b>'+escapeHtml(c.name||'(ບໍ່ມີຊື່)')+'</b> — '+escapeHtml(c.phone||'')+
-           (addr?'<div class="cs-sub">'+escapeHtml(addr)+'</div>':'')+
-           '</div>';
-  }).join('');
-  box.classList.add('show');
-}
-
-function selectCustomer(i){
-  var box = document.getElementById('customer-suggest');
-  var matches = JSON.parse(box.dataset.matches||'[]');
-  var c = matches[i];
-  if (!c) return;
-  document.getElementById('f-name').value = c.name || '';
-  document.getElementById('f-phone').value = c.phone || '';
-  document.getElementById('f-province').value = c.province || '';
-  onProvinceChange();
-  document.getElementById('f-district').value = c.district || '';
-  document.getElementById('f-village').value = c.village || '';
-  document.getElementById('f-customer-search').value = '';
-  box.classList.remove('show'); box.innerHTML='';
-  var prodSel = document.getElementById('f-product');
-  if (prodSel) prodSel.focus();
-}
-
-document.addEventListener('click', function(e){
-  var box = document.getElementById('customer-suggest');
-  var input = document.getElementById('f-customer-search');
-  if (!box || !input) return;
-  if (e.target !== input && !box.contains(e.target)) box.classList.remove('show');
-});
 
 // ================================================================
 // SHEET URL
@@ -868,9 +773,7 @@ function getData(){
 }
 
 function clearForm(){
-  ['f-name','f-phone','f-village','f-cod','f-customer-search'].forEach(function(id){document.getElementById(id).value='';});
-  document.getElementById('customer-suggest').classList.remove('show');
-  document.getElementById('customer-suggest').innerHTML='';
+  ['f-name','f-phone','f-village','f-cod'].forEach(function(id){document.getElementById(id).value='';});
   document.getElementById('f-province').value='';
   document.getElementById('f-district').innerHTML='<option value="">-- ເລືອກ --</option>';
   document.getElementById('f-district').disabled=true;
@@ -1234,13 +1137,12 @@ function saveHistory(d){
 }
 
 // ບັນທຶກອໍເດີໄປ Google Sheet (Orders + upsert Customers ຕາມເບີໂທ) — ຕ້ອງເອີ້ນທຸກເທື່ອທີ່ບັນທຶກອໍເດີ
-// (ບໍ່ວ່າຈະພິມຜ່ານຫຍັງ) ບໍ່ດັ່ງນັ້ນ ຄຳສັ່ງ ແລະ ຂໍ້ມູນລູກຄ້າຈະບໍ່ຂຶ້ນໃນ Sheet ແລະ ຄົ້ນຫາລູກຄ້າເກົ່າຈະບໍ່ພົບ
+// (ບໍ່ວ່າຈະພິມຜ່ານຫຍັງ) ບໍ່ດັ່ງນັ້ນ ຄຳສັ່ງ ຈະບໍ່ຂຶ້ນໃນ Sheet ແລະ ບໍ່ປາກົດຢູ່ໃນປະຫວັດ (Google Sheet)
 async function saveOrderToSheet(d){
   if (!SHEET_URL) return;
   try{
     await fetch(SHEET_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)});
   }catch(e){}
-  loadCustomers();   // ໂຫລດລາຍຊື່ລູກຄ້າຄືນ ໃຫ້ຄົ້ນຫາເຫັນລູກຄ້າທີ່ຫາກໍ່ບັນທຶກທັນທີ (ບໍ່ຕ້ອງ reload ໜ້າ)
 }
 
 async function saveAndPrint(){
@@ -1455,10 +1357,6 @@ function useHistoryOrder(i){
   var d = HIST_ITEMS[i];
   if (!d) return;
 
-  document.getElementById('f-customer-search').value = '';
-  document.getElementById('customer-suggest').classList.remove('show');
-  document.getElementById('customer-suggest').innerHTML='';
-
   document.getElementById('f-name').value = d.name || '';
   document.getElementById('f-phone').value = d.phone || '';
   document.getElementById('f-province').value = d.province || '';
@@ -1499,14 +1397,19 @@ function useHistoryOrder(i){
   showMsg('✅ ດຶງຂໍ້ມູນລູກຄ້າມາໃສ່ຟອມແລ້ວ — ກວດສອບຂໍ້ມູນ ແລ້ວກົດ Preview/ພິມ ເພື່ອອອກບິນໃໝ່','ok');
   window.scrollTo({top:0, behavior:'smooth'});
 }
+// HIST_ALL = ຂໍ້ມູນປະຫວັດທັງໝົດທີ່ໂຫລດມາຫຼ້າສຸດ (ຈາກ Sheet ຫຼືເຄື່ອງ) — ໃຊ້ໂດຍ filterHistory() ຄົ້ນຫາ
+// ໂດຍບໍ່ຕ້ອງໂຫລດຄືນທຸກຄັ້ງທີ່ພິມຄົ້ນຫາ. HIST_MSG_PREFIX = ຂໍ້ຄວາມແຈ້ງເຕືອນ (ຖ້າມີ) ໃຫ້ສະແດງຄ້າງໄວ້ຢູ່ເທິງ.
+var HIST_ALL = [];
+var HIST_MSG_PREFIX = '';
+
 function renderHistoryLocal(msgPrefix){
-  var el=document.getElementById('hiList');
-  var h=JSON.parse(localStorage.getItem('tnwax_h')||'[]');
-  if(!h.length){
-    el.innerHTML=(msgPrefix||'')+'<p style="color:#94a3b8;font-size:.85rem">ຍັງບໍ່ມີຂໍ້ມູນ</p>';
+  HIST_ALL = JSON.parse(localStorage.getItem('tnwax_h')||'[]');
+  HIST_MSG_PREFIX = msgPrefix || '';
+  if(!HIST_ALL.length){
+    document.getElementById('hiList').innerHTML = HIST_MSG_PREFIX + '<p style="color:#94a3b8;font-size:.85rem">ຍັງບໍ່ມີຂໍ້ມູນ</p>';
     return;
   }
-  el.innerHTML=(msgPrefix||'')+historyRowsHtml(h.slice(0,30));
+  filterHistory();
 }
 function renderHistory(){
   var el=document.getElementById('hiList');
@@ -1519,15 +1422,35 @@ function renderHistory(){
   jsonp(SHEET_URL + sep + 'action=orders')
     .then(function(res){
       var list = (res && res.orders) ? res.orders : [];
+      HIST_ALL = list;
+      HIST_MSG_PREFIX = '';
       if(!list.length){
         el.innerHTML='<p style="color:#94a3b8;font-size:.85rem">ຍັງບໍ່ມີຂໍ້ມູນໃນ Google Sheet</p>';
         return;
       }
-      el.innerHTML=historyRowsHtml(list.slice(0,30));
+      filterHistory();
     })
     .catch(function(){
       renderHistoryLocal('<p style="color:#b91c1c;font-size:.82rem;margin-bottom:8px">⚠ ໂຫລດປະຫວັດຈາກ Google Sheet ບໍ່ໄດ້ (ເຊັກອິນເຕີເນັດ/URL) — <span style="text-decoration:underline;cursor:pointer" onclick="renderHistory()">ລອງໃໝ່</span>. ສະແດງປະຫວັດໃນເຄື່ອງນີ້ແທນ:</p>');
     });
+}
+// ຄົ້ນຫາປະຫວັດດ້ວຍຊື່ ຫຼື ເບີໂທ — filter ຈາກ HIST_ALL ທີ່ໂຫລດໄວ້ແລ້ວ (ບໍ່ຕ້ອງໂຫລດຄືນຈາກ Sheet)
+function filterHistory(){
+  var el = document.getElementById('hiList');
+  var q = (document.getElementById('hist-search').value || '').trim().toLowerCase();
+  var list = HIST_ALL;
+  if (q){
+    list = HIST_ALL.filter(function(d){
+      return (d.name && d.name.toLowerCase().indexOf(q)>=0) || (d.phone && String(d.phone).indexOf(q)>=0);
+    });
+  }
+  if (!list.length){
+    el.innerHTML = HIST_MSG_PREFIX + (q
+      ? '<p style="color:#94a3b8;font-size:.85rem">ບໍ່ພົບປະຫວັດທີ່ຕົງກັບ "'+escapeHtml(q)+'"</p>'
+      : '<p style="color:#94a3b8;font-size:.85rem">ຍັງບໍ່ມີຂໍ້ມູນ</p>');
+    return;
+  }
+  el.innerHTML = HIST_MSG_PREFIX + historyRowsHtml(list.slice(0,30));
 }
 </script>
 </body>
