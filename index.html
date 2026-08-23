@@ -547,24 +547,77 @@ function onProvinceChange() {
 }
 
 // ================================================================
+// JSONP — ດຶງຂໍ້ມູນຈາກ Google Apps Script ດ້ວຍ <script src> ແທນ fetch()
+// ວິທີນີ້ຫຼີກລ້ຽງບັນຫາ browser ບລັອກການອ່ານຂໍ້ມູນຂ້າມໂດເມນ (CORS) — ໂດຍສະເພາະເມື່ອໜ້າ TN WAX
+// Store ຖືກເປີດຈາກໄຟລ໌ (file://) ໂດຍກົງ, ຊຶ່ງເປັນສາເຫດຫຼັກທີ່ fetch() ອາດໃຊ້ບໍ່ໄດ້ເຖິງແມ່ນ
+// Apps Script URL ຈະໃຊ້ງານໄດ້ປົກກະຕິເວລາເປີດຢູ່ browser ໂດຍກົງ. Apps Script ຝັ່ງ (.gs) ຮອງຮັບ
+// ?callback=xxx ຢູ່ແລ້ວ (ຫໍ່ຄຳຕອບເປັນ xxx(...) ແທນ JSON ທຳມະດາ).
+// ================================================================
+var __jsonpN = 0;
+function jsonp(url, timeoutMs){
+  return new Promise(function(resolve, reject){
+    var cbName = '__tnwaxCb'+(__jsonpN++)+'_'+Math.floor(Math.random()*1e9);
+    var script = document.createElement('script');
+    var done = false;
+    var timer = setTimeout(function(){
+      if (done) return; done = true;
+      cleanup();
+      reject(new Error('ໝົດເວລາເຊື່ອມຕໍ່ Google Sheet'));
+    }, timeoutMs || 12000);
+    function cleanup(){
+      clearTimeout(timer);
+      try{ delete window[cbName]; }catch(e){ window[cbName]=undefined; }
+      if (script.parentNode) script.parentNode.removeChild(script);
+    }
+    window[cbName] = function(data){
+      if (done) return; done = true;
+      cleanup();
+      resolve(data);
+    };
+    script.onerror = function(){
+      if (done) return; done = true;
+      cleanup();
+      reject(new Error('ໂຫລດຂໍ້ມູນຈາກ Google Sheet ບໍ່ໄດ້'));
+    };
+    var sep = url.indexOf('?') >= 0 ? '&' : '?';
+    script.src = url + sep + 'callback=' + cbName;
+    document.head.appendChild(script);
+  });
+}
+
+// ================================================================
 // ລູກຄ້າເກົ່າ — ດຶງລາຍຊື່ຈາກ Google Sheet ມາຄົ້ນຫາ/ດຶງຂໍ້ມູນອັດຕະໂນມັດ
 // ================================================================
 var CUSTOMERS = [];
 
 function loadCustomers(){
-  if (!SHEET_URL) return;
+  if (!SHEET_URL){
+    var s0 = document.getElementById('customer-status');
+    if (s0){ s0.textContent = 'ℹ ຍັງບໍ່ໄດ້ຕັ້ງ Google Sheet URL — ຄົ້ນຫາລູກຄ້າເກົ່າຈະໃຊ້ບໍ່ໄດ້'; s0.className='cust-status er'; s0.onclick=null; }
+    return;
+  }
   var statusEl = document.getElementById('customer-status');
   if (statusEl){ statusEl.textContent = '⏳ ກຳລັງໂຫລດລາຍຊື່ລູກຄ້າ...'; statusEl.className='cust-status'; statusEl.onclick=null; }
   var sep = SHEET_URL.indexOf('?') >= 0 ? '&' : '?';
-  fetch(SHEET_URL + sep + 'action=customers')
-    .then(function(r){ return r.json(); })
+  return jsonp(SHEET_URL + sep + 'action=customers')
     .then(function(res){
-      CUSTOMERS = (res && res.customers) ? res.customers : [];
-      if (statusEl) statusEl.textContent = '';
+      if (!res || res.ok === false) throw new Error((res && res.error) || 'ຂໍ້ມູນຈາກ Sheet ບໍ່ຖືກຕ້ອງ');
+      CUSTOMERS = res.customers || [];
+      if (statusEl){
+        if (!CUSTOMERS.length){
+          statusEl.textContent = 'ℹ ຍັງບໍ່ມີຂໍ້ມູນລູກຄ້າໃນຖານຂໍ້ມູນ — ຈະປາກົດອັດຕະໂນມັດຫຼັງບັນທຶກອໍເດີທຳອິດ (ກົດເພື່ອໂຫລດຄືນ)';
+          statusEl.className = 'cust-status';
+          statusEl.onclick = loadCustomers;
+        } else {
+          statusEl.textContent = '';
+          statusEl.className = 'cust-status';
+          statusEl.onclick = null;
+        }
+      }
     })
     .catch(function(){
       if (statusEl){
-        statusEl.textContent = '⚠ ໂຫລດລາຍຊື່ລູກຄ້າບໍ່ໄດ້ (ກົດເພື່ອລອງໃໝ່)';
+        statusEl.textContent = '⚠ ໂຫລດລາຍຊື່ລູກຄ້າຈາກ Google Sheet ບໍ່ໄດ້ (ເຊັກອິນເຕີເນັດ/URL/Deploy) — ກົດເພື່ອລອງໃໝ່';
         statusEl.className = 'cust-status er';
         statusEl.onclick = loadCustomers;
       }
@@ -585,7 +638,16 @@ function filterCustomers(){
     return (c.name && c.name.toLowerCase().indexOf(q)>=0) || (c.phone && String(c.phone).indexOf(q)>=0);
   }).slice(0, 8);
   box.dataset.matches = JSON.stringify(matches);
-  if (!matches.length){ box.classList.remove('show'); box.innerHTML=''; return; }
+  if (!matches.length){
+    if (CUSTOMERS.length){
+      // ມີຂໍ້ມູນລູກຄ້າຢູ່ແລ້ວ ແຕ່ຄົ້ນຫາບໍ່ພົບ — ບອກໃຫ້ຮູ້ວ່າຄົ້ນຫາແລ້ວ ບໍ່ແມ່ນລະບົບຄ້າງ
+      box.innerHTML = '<div class="cust-item" style="color:#94a3b8;cursor:default">ບໍ່ພົບລູກຄ້າທີ່ຕົງກັບ "'+escapeHtml(q)+'"</div>';
+      box.classList.add('show');
+    } else {
+      box.classList.remove('show'); box.innerHTML='';
+    }
+    return;
+  }
   box.innerHTML = matches.map(function(c, i){
     var addr = [c.village?('ບ້ານ'+c.village):'', c.district?('ເມືອງ'+c.district):'', c.province||''].filter(Boolean).join(', ');
     return '<div class="cust-item" onclick="selectCustomer('+i+')">'+
@@ -1166,15 +1228,23 @@ function saveHistory(d){
   localStorage.setItem('tnwax_h',JSON.stringify(h));
 }
 
+// ບັນທຶກອໍເດີໄປ Google Sheet (Orders + upsert Customers ຕາມເບີໂທ) — ຕ້ອງເອີ້ນທຸກເທື່ອທີ່ບັນທຶກອໍເດີ
+// (ບໍ່ວ່າຈະພິມຜ່ານຫຍັງ) ບໍ່ດັ່ງນັ້ນ ຄຳສັ່ງ ແລະ ຂໍ້ມູນລູກຄ້າຈະບໍ່ຂຶ້ນໃນ Sheet ແລະ ຄົ້ນຫາລູກຄ້າເກົ່າຈະບໍ່ພົບ
+async function saveOrderToSheet(d){
+  if (!SHEET_URL) return;
+  try{
+    await fetch(SHEET_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)});
+  }catch(e){}
+  loadCustomers();   // ໂຫລດລາຍຊື່ລູກຄ້າຄືນ ໃຫ້ຄົ້ນຫາເຫັນລູກຄ້າທີ່ຫາກໍ່ບັນທຶກທັນທີ (ບໍ່ຕ້ອງ reload ໜ້າ)
+}
+
 async function saveAndPrint(){
   var d=getData();
   if(!d.name)  return showMsg('⚠ ກະລຸນາໃສ່ຊື່','er');
   if(!d.phone) return showMsg('⚠ ກະລຸນາໃສ່ເບີໂທ','er');
   var btn=document.getElementById('btnSave'); btn.disabled=true;
-  if(SHEET_URL){
-    showMsg('⏳ ກຳລັງບັນທຶກ...','ld');
-    try{await fetch(SHEET_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)});}catch(e){}
-  }
+  if(SHEET_URL) showMsg('⏳ ກຳລັງບັນທຶກ...','ld');
+  await saveOrderToSheet(d);
   saveHistory(d);
   if (printMode === 'computer') {
     if (!(printerOK && connMode)) {
@@ -1210,6 +1280,7 @@ async function confirmPrint(){
   // ເກັບ data ໄວ້ກ່ອນ closeModal() ລຶບ pending
   var d = pending;
   saveHistory(d);
+  saveOrderToSheet(d);   // ບັນທຶກໄປ Google Sheet ນຳ (ບໍ່ຕ້ອງລໍຖ້າ ບໍ່ໃຫ້ຊ້າການພິມ)
   closeModal();          // ປິດ modal
   if(!printerOK){
     await connectPrinter();   // ເປີດປ໋ອບອັບເລືອກເຄື່ອງພິມທັນທີ
@@ -1291,6 +1362,7 @@ async function confirmPrintPNG(){
   if(!pending) return closeModal();
   var d=pending;
   saveHistory(d);
+  saveOrderToSheet(d);   // ບັນທຶກໄປ Google Sheet ນຳ (ບໍ່ຕ້ອງລໍຖ້າ ບໍ່ໃຫ້ຊ້າການພິມ)
   closeModal();
   showMsg('🖨 ກຳລັງສ້າງຮູບບິນ...','ld');
   try{
@@ -1309,6 +1381,7 @@ async function computerPrint(){
   if(!pending) return closeModal();
   var d = pending;
   saveHistory(d);
+  saveOrderToSheet(d);   // ບັນທຶກໄປ Google Sheet ນຳ (ບໍ່ຕ້ອງລໍຖ້າ ບໍ່ໃຫ້ຊ້າການພິມ)
   closeModal();
   var hasSerial = ('serial' in navigator), hasBT = ('bluetooth' in navigator);
   if (!hasSerial && !hasBT) {
@@ -1331,6 +1404,7 @@ function saveBillImage(){
   if(!pending) return closeModal();
   var d=pending;
   saveHistory(d);
+  saveOrderToSheet(d);   // ບັນທຶກໄປ Google Sheet ນຳ
   document.fonts.ready.then(function(){
     var cv=billCanvas(d);
     var a=document.createElement('a');
@@ -1374,8 +1448,7 @@ function renderHistory(){
   }
   el.innerHTML='<p style="color:#94a3b8;font-size:.85rem">⏳ ກຳລັງໂຫລດປະຫວັດຈາກ Google Sheet...</p>';
   var sep = SHEET_URL.indexOf('?') >= 0 ? '&' : '?';
-  fetch(SHEET_URL + sep + 'action=orders')
-    .then(function(r){ return r.json(); })
+  jsonp(SHEET_URL + sep + 'action=orders')
     .then(function(res){
       var list = (res && res.orders) ? res.orders : [];
       if(!list.length){
