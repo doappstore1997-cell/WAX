@@ -139,7 +139,12 @@ body { font-family:'Noto Sans Lao','Phetsarath OT',Arial,sans-serif; background:
 .tc { display:none; } .tc.on { display:block; }
 
 /* ── History ── */
-.hi { display:flex; justify-content:space-between; align-items:flex-start; padding:10px 0; border-bottom:1px solid #f1f5f9; font-size:clamp(0.8rem,2vw,0.88rem); gap:8px; }
+.hi-wrap { border-bottom:1px solid #f1f5f9; }
+.hi { display:flex; justify-content:space-between; align-items:flex-start; padding:10px 0; font-size:clamp(0.8rem,2vw,0.88rem); gap:8px; cursor:pointer; touch-action:manipulation; }
+.hi:active { background:#f8fafc; }
+.hi-actions { display:none; padding:0 0 10px 0; }
+.hi-actions.show { display:block; }
+.hi-actions button { width:100%; padding:10px; border-radius:8px; border:none; background:#2ecc71; color:white; font-weight:600; font-size:clamp(0.8rem,2vw,0.87rem); cursor:pointer; touch-action:manipulation; min-height:42px; }
 .hi:last-child { border-bottom:none; }
 .hn { font-weight:600; }
 .hd { color:#64748b; font-size:clamp(0.72rem,1.8vw,0.8rem); }
@@ -1419,17 +1424,80 @@ function saveBillImage(){
 // ================================================================
 // HISTORY
 // ================================================================
+var HIST_ITEMS = [];   // ລາຍການປະຫວັດທີ່ສະແດງຢູ່ໃນປັດຈຸບັນ — ໃຊ້ໂດຍ useHistoryOrder(idx)
 function historyRowsHtml(list){
-  return list.map(function(d){
-    return '<div class="hi">'+
+  HIST_ITEMS = list;
+  return list.map(function(d, i){
+    return '<div class="hi-wrap">'+
+      '<div class="hi" onclick="toggleHistActions('+i+')">'+
       '<div><div class="hn">'+escapeHtml(d.name||'')+'</div>'+
       '<div class="hd">'+escapeHtml(d.phone||'')+' · '+escapeHtml(d.address||'-')+'</div>'+
       '<div class="hd">'+escapeHtml(d.shipping||'')+' · '+escapeHtml(d.date||'')+'</div></div>'+
       '<div style="text-align:right;flex-shrink:0">'+
       '<span class="badge '+(d.payType==='COD'?'bc':'bp')+'">'+escapeHtml(d.payType||'')+'</span>'+
       (d.cod?'<div style="font-weight:bold;font-size:.85rem;margin-top:3px">'+parseInt(d.cod).toLocaleString()+'₭</div>':'')+
+      '</div></div>'+
+      '<div class="hi-actions" id="hist-actions-'+i+'">'+
+      '<button onclick="event.stopPropagation();useHistoryOrder('+i+')">🧾 ໃຊ້ຂໍ້ມູນລູກຄ້ານີ້ອອກບິນໃໝ່</button>'+
       '</div></div>';
   }).join('');
+}
+// ກົດແຖວປະຫວັດ → ເປີດ/ປິດແຖບໃຫ້ເລືອກ "ອອກບິນໃໝ່" (ອັນອື່ນປິດອັດຕະໂນມັດ)
+function toggleHistActions(i){
+  var target = document.getElementById('hist-actions-'+i);
+  if (!target) return;
+  var willShow = !target.classList.contains('show');
+  document.querySelectorAll('.hi-actions.show').forEach(function(el){ el.classList.remove('show'); });
+  if (willShow) target.classList.add('show');
+}
+// ດຶງຂໍ້ມູນລູກຄ້າ/ອໍເດີຈາກປະຫວັດ ມາໃສ່ຟອມ ເພື່ອອອກບິນໃໝ່ອີກຄັ້ງ
+function useHistoryOrder(i){
+  var d = HIST_ITEMS[i];
+  if (!d) return;
+
+  document.getElementById('f-customer-search').value = '';
+  document.getElementById('customer-suggest').classList.remove('show');
+  document.getElementById('customer-suggest').innerHTML='';
+
+  document.getElementById('f-name').value = d.name || '';
+  document.getElementById('f-phone').value = d.phone || '';
+  document.getElementById('f-province').value = d.province || '';
+  onProvinceChange();
+  document.getElementById('f-district').value = d.district || '';
+  document.getElementById('f-village').value = d.village || '';
+
+  // ສິນຄ້າ — ໃສ່ຊ່ອງພິມເອງສະເໝີ ເພື່ອໃຫ້ຕົງກັບຂໍ້ຄວາມທີ່ບັນທຶກໄວ້ ຮ້ອຍເປີເຊັນ
+  document.getElementById('f-product').value = '__custom__';
+  var custom = document.getElementById('f-product-custom');
+  custom.style.display = '';
+  custom.value = d.note || '';
+
+  // ວິທີຈ່າຍ
+  document.querySelectorAll('#g-pay .btt').forEach(function(b){
+    b.classList.toggle('on', b.dataset.v === d.payType);
+  });
+  toggleCOD();
+  document.getElementById('f-cod').value = d.cod || '';
+
+  // ຂົນສົ່ງ (ເລືອກໄດ້ຫຼາຍລາຍການ)
+  var shipNames = (d.shipping && d.shipping !== '-') ? d.shipping.split(',').map(function(s){return s.trim();}) : [];
+  document.querySelectorAll('#g-ship .btt').forEach(function(b){
+    b.classList.toggle('on', shipNames.indexOf(b.dataset.v) >= 0);
+  });
+
+  // ຄ່າຝາກ
+  var freightMatched = false;
+  document.querySelectorAll('input[name="freight"]').forEach(function(r){
+    r.checked = (r.value === (d.freight || ''));
+    if (r.checked) freightMatched = true;
+  });
+  if (!freightMatched) document.getElementById('chk-none').checked = true;
+  styleFreight();
+
+  document.querySelectorAll('.hi-actions.show').forEach(function(el){ el.classList.remove('show'); });
+  openTab('form');
+  showMsg('✅ ດຶງຂໍ້ມູນລູກຄ້າມາໃສ່ຟອມແລ້ວ — ກວດສອບຂໍ້ມູນ ແລ້ວກົດ Preview/ພິມ ເພື່ອອອກບິນໃໝ່','ok');
+  window.scrollTo({top:0, behavior:'smooth'});
 }
 function renderHistoryLocal(msgPrefix){
   var el=document.getElementById('hiList');
