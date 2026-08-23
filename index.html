@@ -404,7 +404,7 @@ body { font-family:'Noto Sans Lao','Phetsarath OT',Arial,sans-serif; background:
         <span onclick="renderHistory()" style="font-size:.78rem;color:#7c3aed;text-decoration:underline;cursor:pointer;font-weight:600">🔄 ໂຫລດຄືນ</span>
       </div>
       <div class="field" style="margin-bottom:10px">
-        <input type="text" id="hist-search" placeholder="🔍 ຄົ້ນຫາຊື່ ຫຼື ເບີໂທ..." autocomplete="off" oninput="filterHistory()"/>
+        <input type="text" id="hist-search" placeholder="🔍 ຄົ້ນຫາຊື່ ຫຼື ເບີໂທ..." autocomplete="off" inputmode="search" oninput="filterHistory()" onkeyup="filterHistory()" onchange="filterHistory()" onsearch="filterHistory()"/>
       </div>
       <div id="hiList"><p style="color:#94a3b8;font-size:.85rem">ຍັງບໍ່ມີຂໍ້ມູນ</p></div>
     </div>
@@ -1435,18 +1435,29 @@ function renderHistory(){
     });
 }
 // ຄົ້ນຫາປະຫວັດດ້ວຍຊື່ ຫຼື ເບີໂທ — filter ຈາກ HIST_ALL ທີ່ໂຫລດໄວ້ແລ້ວ (ບໍ່ຕ້ອງໂຫລດຄືນຈາກ Sheet)
+function normLao_(s){
+  s = String(s || '');
+  // ບາງຄັ້ງຕົວອັກສອນລາວທີ່ພິມ ຫຼືທີ່ບັນທຶກໄວ້ໃນ Sheet ອາດຢູ່ຄົນລະຮູບແບບ Unicode ກັນ (NFC/NFD)
+  // ເຖິງແມ່ນຈະເບິ່ງຄືກັນທຸກປະການ — normalize ໃຫ້ຄືກັນກ່ອນປຽບທຽບ ບໍ່ດັ່ງນັ້ນຄົ້ນຫາອາດບໍ່ພົບ
+  return (s.normalize ? s.normalize('NFC') : s).toLowerCase();
+}
 function filterHistory(){
   var el = document.getElementById('hiList');
-  var q = (document.getElementById('hist-search').value || '').trim().toLowerCase();
+  var raw = (document.getElementById('hist-search').value || '').trim();
+  var q = normLao_(raw);
+  var qDigits = raw.replace(/[^0-9]/g, '');   // ສຳລັບຄົ້ນຫາເບີໂທ ບໍ່ວ່າຈະພິມແບບໃສ່ຊ່ອງວ່າງ/ຂີດ/+856 ຫຼືບໍ່
   var list = HIST_ALL;
   if (q){
     list = HIST_ALL.filter(function(d){
-      return (d.name && d.name.toLowerCase().indexOf(q)>=0) || (d.phone && String(d.phone).indexOf(q)>=0);
+      var nameMatch = normLao_(d.name).indexOf(q) >= 0;
+      var phoneDigits = String(d.phone || '').replace(/[^0-9]/g, '');
+      var phoneMatch = qDigits && phoneDigits.indexOf(qDigits) >= 0;
+      return nameMatch || phoneMatch;
     });
   }
   if (!list.length){
     el.innerHTML = HIST_MSG_PREFIX + (q
-      ? '<p style="color:#94a3b8;font-size:.85rem">ບໍ່ພົບປະຫວັດທີ່ຕົງກັບ "'+escapeHtml(q)+'"</p>'
+      ? '<p style="color:#94a3b8;font-size:.85rem">ບໍ່ພົບປະຫວັດທີ່ຕົງກັບ "'+escapeHtml(raw)+'"</p>'
       : '<p style="color:#94a3b8;font-size:.85rem">ຍັງບໍ່ມີຂໍ້ມູນ</p>');
     return;
   }
