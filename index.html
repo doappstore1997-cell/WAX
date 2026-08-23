@@ -1417,7 +1417,7 @@ function renderHistory(){
     renderHistoryLocal('<p style="color:#94a3b8;font-size:.82rem;margin-bottom:8px">ℹ ຍັງບໍ່ໄດ້ຕັ້ງ Google Sheet URL — ສະແດງປະຫວັດໃນເຄື່ອງນີ້ເທົ່ານັ້ນ</p>');
     return;
   }
-  el.innerHTML='<p style="color:#94a3b8;font-size:.85rem">⏳ ກຳລັງໂຫລດປະຫວັດຈາກ Google Sheet...</p>';
+  el.innerHTML='<p style="color:#94a3b8;font-size:.85rem">⏳ ກຳລັງໂຫລດປະຫວັດຈາກ ຖານຂໍ້ມູນປະຫວັດ (ຈຳເປັນຕ້ອງເຊື່ອມຕໍ່ອິນເຕີເນັດ)...</p>';
   var sep = SHEET_URL.indexOf('?') >= 0 ? '&' : '?';
   jsonp(SHEET_URL + sep + 'action=orders')
     .then(function(res){
