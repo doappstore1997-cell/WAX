@@ -401,7 +401,7 @@ body { font-family:'Noto Sans Lao','Phetsarath OT',Arial,sans-serif; background:
   <div id="tab-hist" class="tc">
     <div class="card">
       <div class="ct" style="display:flex;align-items:center;justify-content:space-between;gap:8px">
-        <span>ຄຳສັ່ງລ່າສຸດ (ຈາກ Google Sheet)</span>
+        <span>ຄຳສັ່ງລ່າສຸດຈາກຖານຂໍ້ມູນປະຫວັດ</span>
         <span onclick="renderHistory()" style="font-size:.78rem;color:#7c3aed;text-decoration:underline;cursor:pointer;font-weight:600">🔄 ໂຫລດຄືນ</span>
       </div>
       <div id="hiList"><p style="color:#94a3b8;font-size:.85rem">ຍັງບໍ່ມີຂໍ້ມູນ</p></div>
@@ -964,7 +964,7 @@ function drawBill(d, targetCanvas) {
   if (d.note) add('text','ສິນຄ້າ: '+d.note, FS_NORMAL,LH_NORMAL,'left',false);
   // ຂົນສົ່ງ — ຊື່ text ທຳມະດາ
   if (d.shipping && d.shipping !== '-') add('text','ຂົນສົ່ງ: '+d.shipping, FS_NORMAL,LH_NORMAL,'left',false);
-  if (d.freight) add('text',d.freight, FS_SMALL,LH_SMALL,'left',false);
+  if (d.freight) add('text',d.freight, FS_NORMAL,LH_NORMAL,'left',false);
 
   if (d.payType==='COD'){
     // COD — ສະແດງກ່ອງເກັບເງິນ
