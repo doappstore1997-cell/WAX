@@ -328,6 +328,10 @@ body { font-family:'Noto Sans Lao','Phetsarath OT',Arial,sans-serif; background:
             <input type="radio" name="freight" id="chk-origin" value="ຄ່າຝາກຕົ້ນທາງ" onchange="styleFreight()" style="width:15px;height:15px;cursor:pointer;accent-color:#2ecc71">
             ຄ່າຝາກຕົ້ນທາງ
           </label>
+          <label style="display:flex;align-items:center;gap:7px;font-size:.9rem;cursor:pointer;padding:7px 14px;border:1px solid #cbd5e1;border-radius:8px;background:white;user-select:none" id="lbl-dest">
+            <input type="radio" name="freight" id="chk-dest" value="ຄ່າຝາກປາຍທາງ" onchange="styleFreight()" style="width:15px;height:15px;cursor:pointer;accent-color:#2ecc71">
+            ຄ່າຝາກປາຍທາງ
+          </label>
           <label style="display:flex;align-items:center;gap:7px;font-size:.9rem;cursor:pointer;padding:7px 14px;border:1px solid #cbd5e1;border-radius:8px;background:white;user-select:none" id="lbl-none">
             <input type="radio" name="freight" id="chk-none" value="" onchange="styleFreight()" checked style="width:15px;height:15px;cursor:pointer;accent-color:#2ecc71">
             ບໍ່ມີ
@@ -749,7 +753,7 @@ function changeShipImage(evt, inputEl){
 }
 
 function styleFreight(){
-  var ids = [['lbl-origin','chk-origin'],['lbl-none','chk-none']];
+  var ids = [['lbl-origin','chk-origin'],['lbl-dest','chk-dest'],['lbl-none','chk-none']];
   ids.forEach(function(pair){
     var lbl = document.getElementById(pair[0]);
     var checked = document.getElementById(pair[1]).checked;
