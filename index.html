@@ -40,6 +40,11 @@ body { font-family:'Noto Sans Lao','Phetsarath OT',Arial,sans-serif; background:
 .pbtn.conn:hover { background:#16a34a; }
 .pbtn:disabled { opacity:.5; cursor:not-allowed; }
 
+.pmode { display:flex; gap:6px; margin-top:6px; }
+.pmode-btn { flex:1; padding:7px 8px; border-radius:8px; font-size:clamp(0.72rem,1.8vw,0.8rem); font-weight:600; cursor:pointer; border:1px solid #cbd5e1; font-family:inherit; background:white; color:#64748b; touch-action:manipulation; }
+.pmode-btn.on { background:#7c3aed; color:white; border-color:#7c3aed; }
+.pmode-hint { font-size:.72rem; color:#94a3b8; margin-top:4px; }
+
 /* ── Cards ── */
 .card { background:white; border-radius:12px; border:1px solid #e2e8f0; padding:clamp(0.9rem,2.5vw,1.2rem); margin-bottom:0.8rem; }
 .ct   { font-size:clamp(0.68rem,1.6vw,0.75rem); font-weight:600; color:#64748b; text-transform:uppercase; letter-spacing:.06em; margin-bottom:10px; }
@@ -151,11 +156,14 @@ body { font-family:'Noto Sans Lao','Phetsarath OT',Arial,sans-serif; background:
 .mscroll canvas { display:block; width:100%; }
 .mbtns { display:flex; gap:8px; margin-top:8px; flex-shrink:0; }
 .mbtns button { flex:1; padding:clamp(9px,2vw,11px); border-radius:8px; font-size:clamp(0.85rem,2vw,0.92rem); font-weight:600; cursor:pointer; border:none; font-family:inherit; touch-action:manipulation; min-height:44px; }
-.mb-print  { background:#2ecc71; color:white; }
-.mb-save   { background:#3b82f6; color:white; }
-.mb-direct { background:#f59e0b; color:white; font-size:clamp(0.76rem,1.8vw,0.82rem); }
-.mb-cancel { background:#f1f5f9; color:#475569; }
-.mb-hint   { font-size:.72rem; color:#94a3b8; text-align:center; margin-top:6px; }
+.mb-print    { background:#2ecc71; color:white; }
+.mb-save     { background:#3b82f6; color:white; }
+.mb-direct   { background:#f59e0b; color:white; font-size:clamp(0.76rem,1.8vw,0.82rem); }
+.mb-computer { background:#0ea5e9; color:white; }
+.mb-cancel   { background:#f1f5f9; color:#475569; }
+.mb-hint     { font-size:.72rem; color:#94a3b8; text-align:center; margin-top:6px; }
+.mb-section  { font-size:.72rem; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:.05em; margin-top:10px; margin-bottom:2px; }
+.mb-section:first-of-type { margin-top:2px; }
 
 /* ── Desktop enhancement ── */
 @media(min-width:641px){
@@ -196,16 +204,21 @@ body { font-family:'Noto Sans Lao','Phetsarath OT',Arial,sans-serif; background:
     <div class="pname" id="pname">ຍັງບໍ່ໄດ້ເຊື່ອມຕໍ່ Printer</div>
     <button class="pbtn" id="pbtn" onclick="connectPrinter()">🔵 ເຊື່ອມຕໍ່ Printer</button>
   </div>
+  <div class="pmode" id="pmode">
+    <button class="pmode-btn" data-m="computer" onclick="setPrintMode('computer')">💻 ພິມຜ່ານຄອມພິວເຕີ (USB)</button>
+    <button class="pmode-btn" data-m="mobile"   onclick="setPrintMode('mobile')">📱 ພິມຜ່ານມືຖື</button>
+  </div>
+  <div class="pmode-hint" id="pmodeHint"></div>
   <div class="phelp-link" onclick="togglePHelp()">❓ ຊອກຫາ / ເຊື່ອມຕໍ່ເຄື່ອງພິມບໍ່ໄດ້?</div>
   <div class="phelp" id="phelp">
-    <b>ພິມບໍ່ອອກ / ຂຶ້ນຕົວອັກສອນແປກໆ? ໃຫ້ໃຊ້ວິທີ "ພິມເປັນຮູບ PNG" ແທນ:</b>
+    <b>ລະບົບພິມມີ 2 ແບບ — ເລືອກໂໝດຢູ່ດ້ານເທິງໃຫ້ຖືກກັບອຸປະກອນທີ່ໃຊ້:</b>
     <ol>
-      <li>ກົດ <b>👁 Preview</b> → ໃນປ໋ອບອັບກົດ <b>🖨 ພິມເລີຍ (ຮູບ PNG)</b> — ລະບົບຈະສ້າງໃບບິນເປັນຮູບພາບກ່ອນ ບໍ່ໄດ້ສົ່ງໂຄ້ດຕົວອັກສອນຊື່ໆໄປເຄື່ອງພິມ (ນີ້ຄືສາເຫດທີ່ພິມແລ້ວເປັນຕົວອັກສອນແປກໆ/ພາສາຕ່າງດ້າວ).</li>
-      <li>ຖ້າມືຖືຂຶ້ນໜ້າຈໍ "ແຊຣ໌" (Share) — ໃຫ້ເລືອກແອັບພິມເຄື່ອງພິມບີລູທູດຂອງທ່ານ (ເຊັ່ນ Thermer, RawBT, Loyverse ຫຼືແອັບຂອງຍີ່ຫໍ້ເຄື່ອງພິມ) ແລ້ວກົດພິມໃນແອັບນັ້ນ — ຮູບພາບຈະພິມອອກຖືກຕ້ອງສະເໝີ ບໍ່ວ່າຈະເປັນຕົວອັກສອນລາວ.</li>
-      <li>ຖ້າບໍ່ຂຶ້ນໜ້າຈໍ Share (ເຊັ່ນ ຄອມພິວເຕີ): ລະບົບຈະເປີດຮູບບິນຢູ່ແທັບໃໝ່ ໃຫ້ກົດປຸ່ມ <b>🖨 ພິມ / Print</b> ໃນໜ້ານັ້ນ ຫຼືກົດ <b>💾 ບັນທຶກຮູບ</b> ເພື່ອເກັບຮູບໄວ້ພິມພາຍຫຼັງ.</li>
-      <li>ປຸ່ມ <b>⚡ BT ກົງ</b> ແມ່ນວິທີເກົ່າ (ສົ່ງໂຄ້ດພິມກົງໄປເຄື່ອງພິມຜ່ານ Bluetooth) — ໃຊ້ໄດ້ຖ້າເຄື່ອງພິມຂອງທ່ານຮອງຮັບ, ແຕ່ຖ້າພິມແລ້ວແປກໆ ໃຫ້ໃຊ້ວິທີຮູບ PNG ແທນ.</li>
+      <li><b>💻 ພິມຜ່ານຄອມພິວເຕີ (USB):</b> ໃຊ້ໄດ້ດີສຸດເມື່ອຕໍ່ເຄື່ອງພິມກັບຄອມພິວເຕີຜ່ານສາຍ USB. ເລືອກໂໝດ 💻 ຄອມພິວເຕີ → ກົດ <b>👁 Preview</b> → ກົດ <b>🖨 ພິມຜ່ານຄອມພິວເຕີ (USB)</b> → ເລືອກ COM port ຂອງເຄື່ອງພິມໃນປ໋ອບອັບ → ພິມອອກທັນທີ (ໂຄ້ດແບບເກົ່າທີ່ໃຊ້ໄດ້ດີ, ສົ່ງຄັ້ງດຽວ). ໃຊ້ໄດ້ກັບ Google Chrome ຫຼື Microsoft Edge ເທົ່ານັ້ນ.</li>
+      <li><b>📱 ພິມຜ່ານມືຖື:</b> ກົດ <b>👁 Preview</b> → ກົດ <b>🖨 ພິມເລີຍ (ຮູບ PNG)</b> — ລະບົບຈະສ້າງໃບບິນເປັນຮູບພາບກ່ອນ ບໍ່ໄດ້ສົ່ງໂຄ້ດຕົວອັກສອນຊື່ໆໄປເຄື່ອງພິມ (ນີ້ຄືສາເຫດທີ່ພິມແລ້ວເປັນຕົວອັກສອນແປກໆ/ພາສາຕ່າງດ້າວ). ຖ້າມືຖືຂຶ້ນໜ້າຈໍ "ແຊຣ໌" (Share) ໃຫ້ເລືອກແອັບພິມ (Thermer, RawBT, Loyverse ຫຼືແອັບຂອງຍີ່ຫໍ້ເຄື່ອງພິມ) ແລ້ວກົດພິມ — ຮູບພາບຈະພິມອອກຖືກຕ້ອງສະເໝີ.</li>
+      <li>ຖ້າບໍ່ຂຶ້ນໜ້າຈໍ Share: ລະບົບຈະເປີດຮູບບິນຢູ່ແທັບໃໝ່ ໃຫ້ກົດປຸ່ມ <b>🖨 ພິມ / Print</b> ໃນໜ້ານັ້ນ ຫຼືກົດ <b>💾 ບັນທຶກຮູບ</b> ເພື່ອເກັບຮູບໄວ້ພິມພາຍຫຼັງ.</li>
+      <li>ປຸ່ມ <b>⚡ BT ກົງ</b> ໃນໂໝດມືຖື ແມ່ນສົ່ງໂຄ້ດພິມກົງໄປເຄື່ອງພິມຜ່ານ Bluetooth — ໃຊ້ໄດ້ຖ້າເຄື່ອງພິມຂອງທ່ານຮອງຮັບ, ແຕ່ຖ້າພິມແລ້ວແປກໆ ໃຫ້ໃຊ້ວິທີຮູບ PNG ແທນ.</li>
     </ol>
-    <p class="warn">📱 ໝາຍເຫດ iPhone: Safari ຂອງ iPhone ບໍ່ຮອງຮັບການພິມກົງຜ່ານ Bluetooth ຈາກເວັບໄຊທ໌ (ຂໍ້ຈຳກັດຈາກ Apple) — ແຕ່ວິທີ <b>ພິມເປັນຮູບ PNG</b> ຂ້າງເທິງໃຊ້ໄດ້ປົກກະຕິຜ່ານ Share ຫຼືປຸ່ມພິມ, ບໍ່ຈຳເປັນຕ້ອງໃຊ້ Android.</p>
+    <p class="warn">📱 ໝາຍເຫດ iPhone: Safari ຂອງ iPhone ບໍ່ຮອງຮັບການພິມກົງທັງ 2 ແບບຂ້າງເທິງ (ຂໍ້ຈຳກັດຈາກ Apple) — ແຕ່ວິທີ <b>ພິມເປັນຮູບ PNG</b> ໃຊ້ໄດ້ປົກກະຕິຜ່ານ Share ຫຼືປຸ່ມພິມ.</p>
   </div>
 
   <div class="tabs">
@@ -400,6 +413,13 @@ body { font-family:'Noto Sans Lao','Phetsarath OT',Arial,sans-serif; background:
   <div class="mbox">
     <h3>👁 Preview ບິນ</h3>
     <div class="mscroll"><canvas id="prevCanvas"></canvas></div>
+
+    <div class="mb-section">💻 ພິມຜ່ານຄອມພິວເຕີ</div>
+    <div class="mbtns">
+      <button class="mb-computer" onclick="computerPrint()">🖨 ພິມຜ່ານຄອມພິວເຕີ (USB)</button>
+    </div>
+
+    <div class="mb-section">📱 ພິມຜ່ານມືຖື</div>
     <div class="mbtns">
       <button class="mb-print" onclick="confirmPrintPNG()">🖨 ພິມເລີຍ (ຮູບ PNG)</button>
     </div>
@@ -407,10 +427,11 @@ body { font-family:'Noto Sans Lao','Phetsarath OT',Arial,sans-serif; background:
       <button class="mb-save"   onclick="saveBillImage()">💾 ບັນທຶກຮູບ</button>
       <button class="mb-direct" onclick="confirmPrint()">⚡ BT ກົງ</button>
     </div>
+
     <div class="mbtns">
       <button class="mb-cancel" onclick="closeModal()">ຍົກເລີກ</button>
     </div>
-    <div class="mb-hint">💡 ແນະນຳໃຫ້ໃຊ້ "ພິມເລີຍ (ຮູບ PNG)" — ພິມຖືກຕ້ອງສະເໝີ ບໍ່ເປັນຕົວອັກສອນແປກໆ</div>
+    <div class="mb-hint">💡 ຄອມພິວເຕີ: ໃຊ້ "ພິມຜ່ານຄອມພິວເຕີ (USB)". ມືຖື: ແນະນຳ "ພິມເລີຍ (ຮູບ PNG)" — ພິມຖືກຕ້ອງສະເໝີ ບໍ່ເປັນຕົວອັກສອນແປກໆ</div>
   </div>
 </div>
 
@@ -451,6 +472,8 @@ var connMode    = null;   // 'serial' | 'bt'
 var btDevice    = null;
 var btChar      = null;
 var btCanResp   = false;
+var printMode   = localStorage.getItem('tnwax_pmode') ||
+  ((('ontouchstart' in window) || /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) ? 'mobile' : 'computer');
 
 var PRINT_W     = 384;
 var FONT_FAMILY = '"Noto Sans Lao","Phetsarath OT",Arial,sans-serif';
@@ -478,13 +501,14 @@ window.onload = function () {
     var hasSerial = ('serial' in navigator);
     if (!hasBT && !hasSerial) {
       if (isIOS) {
-        setPUI('er','iPhone (Safari) ບໍ່ຮອງຮັບການພິມຜ່ານ Bluetooth — ໃຊ້ Android (Chrome) ຫຼື Computer Chrome/Edge');
+        setPUI('er','iPhone (Safari) ບໍ່ຮອງຮັບການພິມກົງ — ໃຊ້ "📱 ພິມຜ່ານມືຖື (ຮູບ PNG)" ໃນ Preview ແທນ');
       } else {
-        setPUI('er','ບຣາວເຊີນີ້ບໍ່ຮອງຮັບການເຊື່ອມຕໍ່ Printer — ໃຊ້ Google Chrome');
+        setPUI('er','ບຣາວເຊີນີ້ບໍ່ຮອງຮັບການເຊື່ອມຕໍ່ Printer ໂດຍກົງ — ໃຊ້ Google Chrome ຫຼືພິມແບບຮູບ PNG');
       }
       document.getElementById('pbtn').disabled = true;
     }
   })();
+  setPrintMode(printMode);
   buildProvinceList();
   loadCustomers();
   // font warm-up
@@ -619,11 +643,30 @@ function setPUI(state, label) {
   else{btn.textContent='🔵 ເຊື່ອມຕໍ່ Printer';btn.className='pbtn';btn.onclick=connectPrinter;btn.disabled=!(('bluetooth' in navigator)||('serial' in navigator));}
 }
 
-// ---- ຕົວເລືອກເສັ້ນທາງເຊື່ອມຕໍ່: Bluetooth ກ່ອນ (ໃຊ້ໄດ້ທັງ Android/Computer ໂດຍບໍ່ຕ້ອງ pair ລ່ວງໜ້າ), ແລ້ວຄ່ອຍ Web Serial ເປັນສຳຮອງ ----
+// ---- ໂໝດການພິມ: 💻 ຄອມພິວເຕີ (Web Serial/USB ກ່ອນ) ຫຼື 📱 ມືຖື (Bluetooth ກ່ອນ) ----
+function setPrintMode(m){
+  printMode = (m==='computer') ? 'computer' : 'mobile';
+  localStorage.setItem('tnwax_pmode', printMode);
+  var btns = document.querySelectorAll('.pmode-btn');
+  for (var i=0;i<btns.length;i++) btns[i].classList.toggle('on', btns[i].dataset.m===printMode);
+  var hint = document.getElementById('pmodeHint');
+  if (hint){
+    hint.textContent = (printMode==='computer')
+      ? 'ໂໝດ: ພິມຜ່ານ USB/Serial ຕໍ່ກັບຄອມພິວເຕີໂດຍກົງ (ແບບເກົ່າທີ່ໃຊ້ໄດ້ດີ) — ໃຊ້ Google Chrome/Edge'
+      : 'ໂໝດ: ພິມຜ່ານ Bluetooth ຫຼືສົ່ງຮູບ PNG ຜ່ານ Share — ໃຊ້ Google Chrome ໃນ Android ຫຼື Safari ໃນ iPhone';
+  }
+}
+
+// ---- ຕົວເລືອກເສັ້ນທາງເຊື່ອມຕໍ່: ອີງໃສ່ໂໝດການພິມທີ່ເລືອກ ----
 function connectPrinter() {
-  if ('bluetooth' in navigator) return connectPrinterBT();
-  if ('serial' in navigator) return connectPrinterSerial();
-  showMsg('❌ ອຸປະກອນ/ບຣາວເຊີນີ້ບໍ່ຮອງຮັບການເຊື່ອມຕໍ່ Printer','er');
+  if (printMode === 'computer') {
+    if ('serial' in navigator) return connectPrinterSerial();
+    if ('bluetooth' in navigator) return connectPrinterBT();
+  } else {
+    if ('bluetooth' in navigator) return connectPrinterBT();
+    if ('serial' in navigator) return connectPrinterSerial();
+  }
+  showMsg('❌ ອຸປະກອນ/ບຣາວເຊີນີ້ບໍ່ຮອງຮັບການເຊື່ອມຕໍ່ Printer ໂດຍກົງ — ລອງໃຊ້ "📱 ພິມຜ່ານມືຖື (ຮູບ PNG)" ແທນ','er');
   return Promise.resolve();
 }
 function disconnectPrinter(){
@@ -1133,13 +1176,21 @@ async function saveAndPrint(){
     try{await fetch(SHEET_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)});}catch(e){}
   }
   saveHistory(d);
-  showMsg('🖨 ກຳລັງສ້າງຮູບບິນ...','ld');
-  try{
-    var r = await shareOrPrintPNG(d);
-    showMsg(r==='shared' ? '✅ ສົ່ງຮູບບິນສຳເລັດ — ເລືອກແອັບພິມແລ້ວກົດພິມ' : '✅ ເປີດຮູບບິນ — ກົດປຸ່ມພິມໃນໜ້າຕ່າງໃໝ່','ok');
-  }catch(e){
-    if(e && e.name==='AbortError'){ showMsg('','ok'); }
-    else showMsg('❌ '+((e&&e.message)||e),'er');
+  if (printMode === 'computer') {
+    if (!(printerOK && connMode)) {
+      await connectPrinter();
+      if (!printerOK) { btn.disabled=false; return; }
+    }
+    await doPrint(d);
+  } else {
+    showMsg('🖨 ກຳລັງສ້າງຮູບບິນ...','ld');
+    try{
+      var r = await shareOrPrintPNG(d);
+      showMsg(r==='shared' ? '✅ ສົ່ງຮູບບິນສຳເລັດ — ເລືອກແອັບພິມແລ້ວກົດພິມ' : '✅ ເປີດຮູບບິນ — ກົດປຸ່ມພິມໃນໜ້າຕ່າງໃໝ່','ok');
+    }catch(e){
+      if(e && e.name==='AbortError'){ showMsg('','ok'); }
+      else showMsg('❌ '+((e&&e.message)||e),'er');
+    }
   }
   btn.disabled=false;
 }
@@ -1250,6 +1301,23 @@ async function confirmPrintPNG(){
     showMsg('❌ ສ້າງຮູບບິນບໍ່ໄດ້: '+((e&&e.message)||e),'er');
   }
 }
+// ---- ພິມຜ່ານຄອມພິວເຕີ (USB/Serial ໂດຍກົງ — ແບບໂຄ້ດທຳອິດ, ສົ່ງ ESC/POS ຄັ້ງດຽວ ໜ້າເຊື່ອຖືທີ່ສຸດຜ່ານສາຍ USB) ----
+async function computerPrint(){
+  if(!pending) return closeModal();
+  var d = pending;
+  saveHistory(d);
+  closeModal();
+  if (!('serial' in navigator)) {
+    showMsg('❌ Browser ນີ້ບໍ່ຮອງຮັບການພິມຜ່ານ USB (Web Serial) — ກະລຸນາໃຊ້ Google Chrome ຫຼື Microsoft Edge ເທິງຄອມພິວເຕີ, ຫຼືໃຊ້ "📱 ພິມຜ່ານມືຖື" ແທນ','er');
+    return;
+  }
+  if (!(printerOK && connMode==='serial')) {
+    await connectPrinterSerial();
+    if (!(printerOK && connMode==='serial')) return;
+  }
+  await doPrint(d);
+}
+
 function saveBillImage(){
   if(!pending) return closeModal();
   var d=pending;
