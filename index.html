@@ -205,7 +205,7 @@ body { font-family:'Noto Sans Lao','Phetsarath OT',Arial,sans-serif; background:
     <button class="pbtn" id="pbtn" onclick="connectPrinter()">🔵 ເຊື່ອມຕໍ່ Printer</button>
   </div>
   <div class="pmode" id="pmode">
-    <button class="pmode-btn" data-m="computer" onclick="setPrintMode('computer')">💻 ພິມຜ່ານຄອມພິວເຕີ (USB)</button>
+    <button class="pmode-btn" data-m="computer" onclick="setPrintMode('computer')">💻 ພິມຜ່ານຄອມພິວເຕີ (USB/BT)</button>
     <button class="pmode-btn" data-m="mobile"   onclick="setPrintMode('mobile')">📱 ພິມຜ່ານມືຖື</button>
   </div>
   <div class="pmode-hint" id="pmodeHint"></div>
@@ -213,7 +213,7 @@ body { font-family:'Noto Sans Lao','Phetsarath OT',Arial,sans-serif; background:
   <div class="phelp" id="phelp">
     <b>ລະບົບພິມມີ 2 ແບບ — ເລືອກໂໝດຢູ່ດ້ານເທິງໃຫ້ຖືກກັບອຸປະກອນທີ່ໃຊ້:</b>
     <ol>
-      <li><b>💻 ພິມຜ່ານຄອມພິວເຕີ (USB):</b> ໃຊ້ໄດ້ດີສຸດເມື່ອຕໍ່ເຄື່ອງພິມກັບຄອມພິວເຕີຜ່ານສາຍ USB. ເລືອກໂໝດ 💻 ຄອມພິວເຕີ → ກົດ <b>👁 Preview</b> → ກົດ <b>🖨 ພິມຜ່ານຄອມພິວເຕີ (USB)</b> → ເລືອກ COM port ຂອງເຄື່ອງພິມໃນປ໋ອບອັບ → ພິມອອກທັນທີ (ໂຄ້ດແບບເກົ່າທີ່ໃຊ້ໄດ້ດີ, ສົ່ງຄັ້ງດຽວ). ໃຊ້ໄດ້ກັບ Google Chrome ຫຼື Microsoft Edge ເທົ່ານັ້ນ.</li>
+      <li><b>💻 ພິມຜ່ານຄອມພິວເຕີ (USB/Bluetooth):</b> ໃຊ້ໄດ້ທັງເຄື່ອງພິມທີ່ຕໍ່ຜ່ານສາຍ USB ແລະ ເຄື່ອງພິມ Bluetooth. ເລືອກໂໝດ 💻 ຄອມພິວເຕີ → ກົດ <b>👁 Preview</b> → ກົດ <b>🖨 ພິມຜ່ານຄອມພິວເຕີ</b> → ຖ້າມີ USB ລະບົບຈະໃຫ້ເລືອກ COM port ກ່ອນ (ໃຊ້ໄດ້ດີສຸດ, ໂຄ້ດແບບເກົ່າ ສົ່ງຄັ້ງດຽວ); ຖ້າຍົກເລີກ ຫຼືບໍ່ມີ USB ລະບົບຈະເປີດປ໋ອບອັບໃຫ້ເລືອກເຄື່ອງພິມ Bluetooth ແທນ. ໃຊ້ໄດ້ກັບ Google Chrome ຫຼື Microsoft Edge ເທົ່ານັ້ນ.</li>
       <li><b>📱 ພິມຜ່ານມືຖື:</b> ກົດ <b>👁 Preview</b> → ກົດ <b>🖨 ພິມເລີຍ (ຮູບ PNG)</b> — ລະບົບຈະສ້າງໃບບິນເປັນຮູບພາບກ່ອນ ບໍ່ໄດ້ສົ່ງໂຄ້ດຕົວອັກສອນຊື່ໆໄປເຄື່ອງພິມ (ນີ້ຄືສາເຫດທີ່ພິມແລ້ວເປັນຕົວອັກສອນແປກໆ/ພາສາຕ່າງດ້າວ). ຖ້າມືຖືຂຶ້ນໜ້າຈໍ "ແຊຣ໌" (Share) ໃຫ້ເລືອກແອັບພິມ (Thermer, RawBT, Loyverse ຫຼືແອັບຂອງຍີ່ຫໍ້ເຄື່ອງພິມ) ແລ້ວກົດພິມ — ຮູບພາບຈະພິມອອກຖືກຕ້ອງສະເໝີ.</li>
       <li>ຖ້າບໍ່ຂຶ້ນໜ້າຈໍ Share: ລະບົບຈະເປີດຮູບບິນຢູ່ແທັບໃໝ່ ໃຫ້ກົດປຸ່ມ <b>🖨 ພິມ / Print</b> ໃນໜ້ານັ້ນ ຫຼືກົດ <b>💾 ບັນທຶກຮູບ</b> ເພື່ອເກັບຮູບໄວ້ພິມພາຍຫຼັງ.</li>
       <li>ປຸ່ມ <b>⚡ BT ກົງ</b> ໃນໂໝດມືຖື ແມ່ນສົ່ງໂຄ້ດພິມກົງໄປເຄື່ອງພິມຜ່ານ Bluetooth — ໃຊ້ໄດ້ຖ້າເຄື່ອງພິມຂອງທ່ານຮອງຮັບ, ແຕ່ຖ້າພິມແລ້ວແປກໆ ໃຫ້ໃຊ້ວິທີຮູບ PNG ແທນ.</li>
@@ -416,7 +416,7 @@ body { font-family:'Noto Sans Lao','Phetsarath OT',Arial,sans-serif; background:
 
     <div class="mb-section">💻 ພິມຜ່ານຄອມພິວເຕີ</div>
     <div class="mbtns">
-      <button class="mb-computer" onclick="computerPrint()">🖨 ພິມຜ່ານຄອມພິວເຕີ (USB)</button>
+      <button class="mb-computer" onclick="computerPrint()">🖨 ພິມຜ່ານຄອມພິວເຕີ (USB/BT)</button>
     </div>
 
     <div class="mb-section">📱 ພິມຜ່ານມືຖື</div>
@@ -652,7 +652,7 @@ function setPrintMode(m){
   var hint = document.getElementById('pmodeHint');
   if (hint){
     hint.textContent = (printMode==='computer')
-      ? 'ໂໝດ: ພິມຜ່ານ USB/Serial ຕໍ່ກັບຄອມພິວເຕີໂດຍກົງ (ແບບເກົ່າທີ່ໃຊ້ໄດ້ດີ) — ໃຊ້ Google Chrome/Edge'
+      ? 'ໂໝດ: ພິມກົງຈາກຄອມພິວເຕີ — ໃຊ້ໄດ້ທັງສາຍ USB ແລະ Bluetooth (ແລ້ວແຕ່ເຄື່ອງພິມທ່ານຕໍ່ແບບໃດ) — ໃຊ້ Google Chrome/Edge'
       : 'ໂໝດ: ພິມຜ່ານ Bluetooth ຫຼືສົ່ງຮູບ PNG ຜ່ານ Share — ໃຊ້ Google Chrome ໃນ Android ຫຼື Safari ໃນ iPhone';
   }
 }
@@ -1301,19 +1301,28 @@ async function confirmPrintPNG(){
     showMsg('❌ ສ້າງຮູບບິນບໍ່ໄດ້: '+((e&&e.message)||e),'er');
   }
 }
-// ---- ພິມຜ່ານຄອມພິວເຕີ (USB/Serial ໂດຍກົງ — ແບບໂຄ້ດທຳອິດ, ສົ່ງ ESC/POS ຄັ້ງດຽວ ໜ້າເຊື່ອຖືທີ່ສຸດຜ່ານສາຍ USB) ----
+// ---- ພິມຜ່ານຄອມພິວເຕີ (ໃຊ້ໄດ້ທັງ USB/Serial ແລະ Bluetooth — ແລ້ວແຕ່ເຄື່ອງພິມທ່ານຕໍ່ແບບໃດ) ----
+// ຖ້າຕໍ່ຢູ່ແລ້ວ (ບໍ່ວ່າ USB ຫຼື Bluetooth) ຈະໃຊ້ການເຊື່ອມຕໍ່ເດີມພິມເລີຍ.
+// ຖ້າຍັງບໍ່ໄດ້ຕໍ່: ລອງ USB (Web Serial) ກ່ອນ ເພາະໜ້າເຊື່ອຖືສຸດຜ່ານສາຍ, ຖ້າບໍ່ຮອງຮັບຫຼືຍົກເລີກ
+// ຈຶ່ງລອງ Bluetooth ແທນ — ຄອມພິວເຕີສ່ວນຫຼາຍ (Windows/Mac) ຮອງຮັບທັງ 2 ແບບ.
 async function computerPrint(){
   if(!pending) return closeModal();
   var d = pending;
   saveHistory(d);
   closeModal();
-  if (!('serial' in navigator)) {
-    showMsg('❌ Browser ນີ້ບໍ່ຮອງຮັບການພິມຜ່ານ USB (Web Serial) — ກະລຸນາໃຊ້ Google Chrome ຫຼື Microsoft Edge ເທິງຄອມພິວເຕີ, ຫຼືໃຊ້ "📱 ພິມຜ່ານມືຖື" ແທນ','er');
+  var hasSerial = ('serial' in navigator), hasBT = ('bluetooth' in navigator);
+  if (!hasSerial && !hasBT) {
+    showMsg('❌ Browser ນີ້ບໍ່ຮອງຮັບການພິມຜ່ານ USB ຫຼື Bluetooth — ກະລຸນາໃຊ້ Google Chrome ຫຼື Microsoft Edge ເທິງຄອມພິວເຕີ, ຫຼືໃຊ້ "📱 ພິມຜ່ານມືຖື" ແທນ','er');
     return;
   }
-  if (!(printerOK && connMode==='serial')) {
-    await connectPrinterSerial();
-    if (!(printerOK && connMode==='serial')) return;
+  if (!printerOK) {
+    if (hasSerial) {
+      await connectPrinterSerial();
+      if (!printerOK && hasBT) await connectPrinterBT();   // USB ຖືກຍົກເລີກ/ບໍ່ໄດ້ → ລອງ Bluetooth ແທນ
+    } else {
+      await connectPrinterBT();
+    }
+    if (!printerOK) return;
   }
   await doPrint(d);
 }
