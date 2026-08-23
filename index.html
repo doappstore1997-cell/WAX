@@ -223,7 +223,7 @@ body { font-family:'Noto Sans Lao','Phetsarath OT',Arial,sans-serif; background:
       <li><b>💻 ພິມຜ່ານຄອມພິວເຕີ (USB/Bluetooth):</b> ໃຊ້ໄດ້ທັງເຄື່ອງພິມທີ່ຕໍ່ຜ່ານສາຍ USB ແລະ ເຄື່ອງພິມ Bluetooth. ເລືອກໂໝດ 💻 ຄອມພິວເຕີ → ກົດ <b>👁 Preview</b> → ກົດ <b>🖨 ພິມຜ່ານຄອມພິວເຕີ</b> → ຖ້າມີ USB ລະບົບຈະໃຫ້ເລືອກ COM port ກ່ອນ (ໃຊ້ໄດ້ດີສຸດ, ໂຄ້ດແບບເກົ່າ ສົ່ງຄັ້ງດຽວ); ຖ້າຍົກເລີກ ຫຼືບໍ່ມີ USB ລະບົບຈະເປີດປ໋ອບອັບໃຫ້ເລືອກເຄື່ອງພິມ Bluetooth ແທນ. ໃຊ້ໄດ້ກັບ Google Chrome ຫຼື Microsoft Edge ເທົ່ານັ້ນ.</li>
       <li><b>📱 ພິມຜ່ານມືຖື:</b> ກົດ <b>👁 Preview</b> → ກົດ <b>🖨 ພິມເລີຍ (ຮູບ PNG)</b> — ລະບົບຈະສ້າງໃບບິນເປັນຮູບພາບກ່ອນ ບໍ່ໄດ້ສົ່ງໂຄ້ດຕົວອັກສອນຊື່ໆໄປເຄື່ອງພິມ (ນີ້ຄືສາເຫດທີ່ພິມແລ້ວເປັນຕົວອັກສອນແປກໆ/ພາສາຕ່າງດ້າວ). ຖ້າມືຖືຂຶ້ນໜ້າຈໍ "ແຊຣ໌" (Share) ໃຫ້ເລືອກແອັບພິມ (Thermer, RawBT, Loyverse ຫຼືແອັບຂອງຍີ່ຫໍ້ເຄື່ອງພິມ) ແລ້ວກົດພິມ — ຮູບພາບຈະພິມອອກຖືກຕ້ອງສະເໝີ.</li>
       <li>ຖ້າບໍ່ຂຶ້ນໜ້າຈໍ Share: ລະບົບຈະເປີດຮູບບິນຢູ່ແທັບໃໝ່ ໃຫ້ກົດປຸ່ມ <b>🖨 ພິມ / Print</b> ໃນໜ້ານັ້ນ ຫຼືກົດ <b>💾 ບັນທຶກຮູບ</b> ເພື່ອເກັບຮູບໄວ້ພິມພາຍຫຼັງ.</li>
-      <li>ປຸ່ມ <b>⚡ BT ກົງ</b> ໃນໂໝດມືຖື ແມ່ນສົ່ງໂຄ້ດພິມກົງໄປເຄື່ອງພິມຜ່ານ Bluetooth — ໃຊ້ໄດ້ຖ້າເຄື່ອງພິມຂອງທ່ານຮອງຮັບ, ແຕ່ຖ້າພິມແລ້ວແປກໆ ໃຫ້ໃຊ້ວິທີຮູບ PNG ແທນ.</li>
+      <li>ປຸ່ມ <b>ພິມຜ່ານ BT ໂດຍກົງ</b> ໃນໂໝດມືຖື ແມ່ນສົ່ງໂຄ້ດພິມກົງໄປເຄື່ອງພິມຜ່ານ Bluetooth — ສ່ວນຫຼາຍບໍ່ແນະນຳ ເພາະມັກຟ້ອງ error, ຄວນໃຊ້ວິທີຮູບ PNG ແທນ (ພິມຖືກຕ້ອງສະເໝີ).</li>
     </ol>
     <p class="warn">📱 ໝາຍເຫດ iPhone: Safari ຂອງ iPhone ບໍ່ຮອງຮັບການພິມກົງທັງ 2 ແບບຂ້າງເທິງ (ຂໍ້ຈຳກັດຈາກ Apple) — ແຕ່ວິທີ <b>ພິມເປັນຮູບ PNG</b> ໃຊ້ໄດ້ປົກກະຕິຜ່ານ Share ຫຼືປຸ່ມພິມ.</p>
   </div>
@@ -431,7 +431,7 @@ body { font-family:'Noto Sans Lao','Phetsarath OT',Arial,sans-serif; background:
     </div>
     <div class="mbtns">
       <button class="mb-save"   onclick="saveBillImage()">💾 ບັນທຶກຮູບ</button>
-      <button class="mb-direct" onclick="confirmPrint()">⚡ BT ກົງ</button>
+      <button class="mb-direct" onclick="confirmPrint()">ພິມຜ່ານ BT ໂດຍກົງ (ສ່ວນຫຼາຍບໍ່ແນະນຳ ເພາະມັກຟ້ອງ error)</button>
     </div>
 
     <div class="mbtns">
@@ -925,6 +925,55 @@ function styleFreight(){
 // ================================================================
 // DRAW BILL ON CANVAS
 // ================================================================
+// ແຕ້ມໂຕນົກຄູ່ຮັກແບບ vector ທຶບເຂັ້ມ (ຄ້າຍ love-birds) — ລຳໂຕ+ຫົວ+ປາກ+ຫາງ+ຕາ
+// cx,cy = ຈຸດກາງ (ປະມານລຳໂຕ), s = ຂະໜາດ, faceLeft = true ໃຫ້ຫັນຫນ້າ(ປາກ)ໄປທາງຊ້າຍ (ຄ່າເລີ່ມຕົ້ນຫັນຫນ້າໄປທາງຂວາ)
+function drawLoveBird(ctx, cx, cy, s, faceLeft){
+  ctx.save();
+  ctx.translate(cx, cy);
+  if (faceLeft) ctx.scale(-1,1);
+  ctx.fillStyle = '#000';
+  // ຫາງ — ສາມແຈນ້ອຍຢູ່ຫລັງ
+  ctx.beginPath();
+  ctx.moveTo(-0.40*s, 0.14*s);
+  ctx.lineTo(-0.64*s, 0.00*s);
+  ctx.lineTo(-0.58*s, 0.24*s);
+  ctx.closePath();
+  ctx.fill();
+  // ລຳໂຕ — ຮູບໄຂ່ນອນ
+  ctx.beginPath();
+  ctx.ellipse(-0.06*s, 0.10*s, 0.40*s, 0.28*s, 0, 0, Math.PI*2);
+  ctx.fill();
+  // ຫົວ — ວົງມົນຢູ່ໜ້າ
+  ctx.beginPath();
+  ctx.arc(0.30*s, -0.10*s, 0.24*s, 0, Math.PI*2);
+  ctx.fill();
+  // ປາກ — ສາມແຈຊີ້ໄປໜ້າ (ທິດຫັນຫນ້າ)
+  ctx.beginPath();
+  ctx.moveTo(0.48*s, -0.14*s);
+  ctx.lineTo(0.70*s, -0.05*s);
+  ctx.lineTo(0.47*s, 0.01*s);
+  ctx.closePath();
+  ctx.fill();
+  // ຕາ — ວົງມົນສີຂາວນ້ອຍໆ
+  ctx.fillStyle = '#fff';
+  ctx.beginPath();
+  ctx.arc(0.33*s, -0.15*s, 0.055*s, 0, Math.PI*2);
+  ctx.fill();
+  ctx.restore();
+}
+// ແຕ້ມຮູບຫົວໃຈນ້ອຍໆ ສີດຳລ້ວນ — cx,cy = ຈຸດກາງ, s = ຂະໜາດ
+function drawHeartIcon(ctx, cx, cy, s){
+  ctx.save();
+  ctx.translate(cx, cy);
+  ctx.fillStyle = '#000';
+  ctx.beginPath();
+  ctx.moveTo(0, 0.32*s);
+  ctx.bezierCurveTo(-0.58*s, -0.14*s, -0.30*s, -0.56*s, 0, -0.20*s);
+  ctx.bezierCurveTo(0.30*s, -0.56*s, 0.58*s, -0.14*s, 0, 0.32*s);
+  ctx.closePath();
+  ctx.fill();
+  ctx.restore();
+}
 function drawBill(d, targetCanvas) {
   var lines = [];
   function add(type,text,fs,lh,align,bold,extra){lines.push({type:type||'text',text:text||'',fs:fs,lh:lh,align:align||'left',bold:!!bold,extra:extra||null});}
@@ -965,7 +1014,7 @@ function drawBill(d, targetCanvas) {
   add('dash','',0,LH_DASH);
   add('gap','',0,LH_GAP);
   add('text','ຂອບໃຈທີ່ໃຊ້ສິນຄ້າຮ້ານເຮົາ',FS_SMALL,LH_SMALL,'center',false);
-  add('text','★ ຂໍໃຫ້ລ້ຳລວຍເງິນຄຳ ★',  FS_SMALL,LH_SMALL,'center',false);
+  add('wish','ຂໍໃຫ້ລ້ຳລວຍເງິນຄຳ',  FS_SMALL,LH_SMALL*1.9,'center',false);
   add('gap','',0,LH_GAP*4);
 
   var totalH = PAD*2;
@@ -1002,6 +1051,29 @@ function drawBill(d, targetCanvas) {
       ctx.beginPath();ctx.moveTo(PAD,y+l.lh/2);ctx.lineTo(PRINT_W-PAD,y+l.lh/2);ctx.stroke();
       ctx.restore();y+=l.lh;return;
     }
+
+    // "ຂໍໃຫ້ລ້ຳລວຍເງິນຄຳ" — ໂຕນົກຄູ່ຮັກຫັນຫນ້າເຂົ້າຫາກັນ ຢູ່ຂ້າງຊ້າຍ-ຂວາ + ຮູບຫົວໃຈນ້ອຍໆຢູ່ເທິງ
+    if(l.type==='wish'){
+      var textTop = y + (l.lh - FS_SMALL)/2;   // ຈັດໂຕໜັງສືໃຫ້ຢູ່ແຖວລຸ່ມຂອງບ່ອນນີ້ (ຊ່ອງເທິງໄວ້ໃສ່ຫົວໃຈ)
+      ctx.font=(l.bold?'bold ':'')+FS_SMALL+'px '+FONT_FAMILY;
+      ctx.textAlign='left'; ctx.textBaseline='top';
+      var tw2 = ctx.measureText(l.text).width;
+      var bs = FS_SMALL*1.35;          // ຂະໜາດໂຕນົກ
+      var gp = 7;                      // ໄລຍະຫ່າງລະຫວ່າງໂຕນົກ-ໂຕໜັງສື
+      var totalW2 = bs+gp+tw2+gp+bs;
+      var sx = PRINT_W/2 - totalW2/2;
+      var birdCY = textTop + FS_SMALL*0.55;
+      // ໂຕນົກຊ້າຍ — ຫັນຫນ້າໄປທາງຂວາ ເຂົ້າຫາໂຕໜັງສື/ອີກໂຕນົກ
+      drawLoveBird(ctx, sx+bs/2, birdCY, bs, false);
+      // ໂຕໜັງສືກາງ
+      ctx.fillText(l.text, sx+bs+gp, textTop);
+      // ໂຕນົກຂວາ — ຫັນຫນ້າໄປທາງຊ້າຍ ເຂົ້າຫາໂຕໜັງສື/ອີກໂຕນົກ (ຫັນຫນ້າເຂົ້າຫາກັນ)
+      drawLoveBird(ctx, sx+bs+gp+tw2+gp+bs/2, birdCY, bs, true);
+      // ຫົວໃຈນ້ອຍໆ ຢູ່ເທິງກາງ ບ່ອນປາກ 2 ໂຕນົກໃກ້ກັນ
+      drawHeartIcon(ctx, PRINT_W/2, y + FS_SMALL*0.20, FS_SMALL*0.62);
+      y+=l.lh; return;
+    }
+
     if(l.type==='cod_label') codBoxY=y-6;
     ctx.font=(l.bold?'bold ':'')+l.fs+'px '+FONT_FAMILY;
     ctx.textBaseline='top';
@@ -1032,6 +1104,7 @@ function drawBill(d, targetCanvas) {
     ctx.save();ctx.strokeStyle='#000';ctx.lineWidth=3;
     ctx.strokeRect(PAD,codBoxY,contentW,codBoxH);ctx.restore();
   }
+
   return cv;
 }
 
