@@ -186,7 +186,7 @@ body { font-family:'Noto Sans Lao','Phetsarath OT',Arial,sans-serif; background:
 
     <div class="card">
       <div class="ct">ຂໍ້ມູນລູກຄ້າ</div>
-      <div class="field"><label>👤 ຊື່ *</label><input type="text" id="f-name" placeholder="ກະລຸນາໃສ່ຊື່"/></div>
+      <div class="field"><label>👤 ຊື່ລູກຄ້າ *</label><input type="text" id="f-name" placeholder="ກະລຸນາໃສ່ຊື່ລູກຄ້າ"/></div>
       <div class="field">
         <label>📞 ເບີໂທ *</label>
         <input type="text" id="f-phone" placeholder="020 XXXXXXXX" inputmode="tel"
@@ -249,7 +249,8 @@ body { font-family:'Noto Sans Lao','Phetsarath OT',Arial,sans-serif; background:
       </div>
       <div id="cod-row" style="margin-top:10px">
         <label style="display:block;font-size:.85rem;color:#475569;margin-bottom:4px">💰 ຈຳນວນເງິນ COD (ກີບ)</label>
-        <input type="number" id="f-cod" placeholder="0" min="0" style="width:100%;padding:9px 11px;border:1px solid #cbd5e1;border-radius:8px;font-size:.95rem;font-family:inherit;color:#222;background:white"/>
+        <input type="number" id="f-cod" placeholder="0" min="0" oninput="updateCodWords()" style="width:100%;padding:9px 11px;border:1px solid #cbd5e1;border-radius:8px;font-size:.95rem;font-family:inherit;color:#222;background:white"/>
+        <div id="f-cod-words" style="margin-top:6px;font-size:.8rem;color:#7c3aed;font-style:italic;min-height:1.1em"></div>
       </div>
     </div>
 
@@ -326,10 +327,6 @@ body { font-family:'Noto Sans Lao','Phetsarath OT',Arial,sans-serif; background:
           <label style="display:flex;align-items:center;gap:7px;font-size:.9rem;cursor:pointer;padding:7px 14px;border:1px solid #cbd5e1;border-radius:8px;background:white;user-select:none" id="lbl-origin">
             <input type="radio" name="freight" id="chk-origin" value="ຄ່າຝາກຕົ້ນທາງ" onchange="styleFreight()" style="width:15px;height:15px;cursor:pointer;accent-color:#2ecc71">
             ຄ່າຝາກຕົ້ນທາງ
-          </label>
-          <label style="display:flex;align-items:center;gap:7px;font-size:.9rem;cursor:pointer;padding:7px 14px;border:1px solid #cbd5e1;border-radius:8px;background:white;user-select:none" id="lbl-dest">
-            <input type="radio" name="freight" id="chk-dest" value="ຄ່າຝາກປາຍທາງ" onchange="styleFreight()" style="width:15px;height:15px;cursor:pointer;accent-color:#2ecc71">
-            ຄ່າຝາກປາຍທາງ
           </label>
           <label style="display:flex;align-items:center;gap:7px;font-size:.9rem;cursor:pointer;padding:7px 14px;border:1px solid #cbd5e1;border-radius:8px;background:white;user-select:none" id="lbl-none">
             <input type="radio" name="freight" id="chk-none" value="" onchange="styleFreight()" checked style="width:15px;height:15px;cursor:pointer;accent-color:#2ecc71">
@@ -413,6 +410,68 @@ LOGO_IMG.src = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAUDBAQEA
 var QR_PRINT_SIZE = 220;                                   // ຂະໜາດ QR ເວລາພິມ
 var QR_IMG = new Image();                                  // QR ສະແກນເບິ່ງສິນຄ້າ ແລະ ລາຄາ
 QR_IMG.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAGQCAAAAACl1GkQAAAGeElEQVR42u3d25qqOBBAYWt/vP8r11xMH0TbaCAJQf91NW4QQxapgpp0iLxgLFHamEHIXF4ImcwJIZNZIWQyKYRM5uSfrpiDNELmHCVGyGSjhJCpjCQhsykhZDIIIQSEEAJCCAEhhIAQQkAICCEEhBACQt6dZf0xRvzm3byKKG7dTmxv05CO+Otc/x3QjCh+jiN83M0fFLJACCEghBAQQggIIQSEgBBC8ITlbA3uVPbLUwjJ+XoxDunzgR0hZMkhIIQQEEIICCEEhBACQkDIWaip9u6YKnvZ/DMzLrDWsyOWLs3ot1BdFtuUmxvczV1tRwhZcggIIQSEEAJCCAEhhIAQEHIWpp/bWywfPtm5Yt80Qqb2TggIIQSEEAJCCAEhhIAQEEIInrF8zqkW64dJyMPOaLZYQ1xOoUDIkkNACCEghBAQQggIASGEgJBzUlFczJj9ZLKmwWPm9vZcyWHG+mhu33rzbricpCOELDkEhBACQggBIYSAEEJACE4kJD5byDJB30Srr2bV1jkvkgknW29ffDfy/GNNDiEEhBACQggBIYSAEEJACAg5C+vi4jHTd9e/umNl3uzUpOOEHDR9Nw/45lEHFrLkEBBCCAghBISAEEJACCEg5F1YFxe71VJ7LZsw6FVrNVOIa8hnQsqtykYntIfiGr8xpkbbdQqxkCWHgBBCQAghIIQQEEIICAEhZ2FdKGv2Pq6qI1XM5s3S1nZV2IbvKas98TErOew5vx1L8x7S/vK+T9s7JmR9+IIycgghIIQQEEIICAEhhGAyIamj5xLyXqWTrmezvH5hR81lf/PVaHW+2ayrauaDRsVXY19w2D5Ccr7r7x0G4nxJ/cPzjbssQkAIISCEEBBCCAghBITgIaW/td9Tq2v3SrTcvG9UtDCanc3OI/3r06nt+LRao5BFCAghBIQQAkIIASGEgBCcSEh02vck1CwcUKyP1kzm3fG39e1WZ6hpUrur4ulCw51GiL8/kEMIASGEgBBCQAgIIQSEEIKhQrr9xXi0+pk3pNm6vTdsn5Fbte8U03ebneu7h6w848/IIZI6CCEEhBACQggBIYSAEIwXEv0PG0+LytGhQXG/Lmy83A3P616Rx+vITkca9dXtJzduhJjbK4cQAkIIASGEgBAQQggIIQTNWZodKY4/0o4KWrfiW1T+zNKpF3dUcGvW4u2loNcU4jj/3N7568bm9krqIIQQEAJCCAEhhIAQQjCIm+JiqTJ2W7MpV9FaNbDbOg+TtnCp6OMc01ODyruDVvSYZG4v5BBCQAghIIQQEAJCCAEhhKA5FVNJB01/3bHvTQvzjCsCxwRTNY9ZNiFafdVUUjkEhBACQkAIISCEEBBCCAj5TCrm9rZj/r89j8Pauxzg44mf+YrmI0viQpYcAkIIASGEgBBCQAghIASEnIVlgjY0qya2qwHWTAuOpg1ehpxguzZHLwWXQQcWsuQQEEIICCEEhIAQQkAIISDkXaip9taUCHsV59Zl2PJSwlVtGDSrORoKmWPObU7fwmJ7z/+WNjkEhIAQQkAIISCEEBBCCAjBF8vsDWw3d7RX6TG3v64u5xSSR3RjwwY3fXudkCWHgBBCQAghIIQQEEIICAEhZ2E5WXt3FH+bvbStPKP4w4S07MjXOzW3XyO1V5CQJYeAEEJACCEghBAQQggIASFnoaK4WFMtHbSIQhZbGM2aGEPOplbIFG+7y4qt0elXhCw5BISgPod8FrFKJzEquxghjzN7rvr/5iMhB42R+PnPeHLfFvHivXAIWXti1gub81de/hHf4mrT+oMRsvVhJJ9kkPh7KMT1P91/MELqRkjGddqIjFUl4GtY/AyJr88/r/r+3vl3W+T6gxFSHbNWaSHuLuvbMZR5fQuQ35Hs/23fu68+GCHbItZ6PDQ4XrrLamEos3KEtX4wjLP1WQwcMzWPlX9ty9OErO0l26pZtuNP5aV2CFnDh1RuD1nYHDGzMBDSc8iO3s3L6nGi8klmfbh8IWwRUog4Uejge39//P/kyMsl48ptxrNUJocUI8tV5Cnd8+ZvoeQ+MmXVTRohj6/5KH1c9/LtU2Rerp7H82qXb63pSb3HXVM+fq6/PBobuePB8ONTSNYGnP0QUrrNOuBZkpC6p7ruSOqTQchsgTI/6GyuNt/tOUtHvJcQIQuEEAJCCAEhIIQQEEIICCEEhBACQkAIISCEEBBCCMbwH6jQMHYgaAkkAAAAAElFTkSuQmCC";
+
+// ================================================================
+// ຕົວເລກເງິນ → ຕົວໜັງສືລາວ (ອີງໃສ່ຕົວຢ່າງໂຄດ VBA PiPo)
+// ================================================================
+var LW_UNIT = ['','ໜຶ່ງ','ສອງ','ສາມ','ສີ່','ຫ້າ','ຫົກ','ເຈັດ','ແປດ','ເກົ້າ'];
+function lwUnit(i){ return LW_UNIT[i] || ''; }
+
+function lw3digit(n, useSen){
+  var s = '';
+  var h = Math.floor(n/100), t = Math.floor((n%100)/10), u = n%10;
+  if (h>0) s += lwUnit(h) + (useSen ? 'ແສນ' : 'ຮ້ອຍ');
+  if (t===1) s += 'ສິບ';
+  else if (t===2) s += 'ຊາວ';
+  else if (t>=3 && t<=9) s += lwUnit(t) + 'ສິບ';
+  if (u>0) s += (u===1 && t>0) ? 'ເອັດ' : lwUnit(u);
+  return s;
+}
+
+function lw6digit(n){
+  var s = '', hi = Math.floor(n/1000), lo = n%1000;
+  if (hi>0) s += lw3digit(hi,false) + 'ພັນ';
+  if (lo>0) s += lw3digit(lo,false);
+  return s;
+}
+
+function lwPanGroup(n){
+  var s = '';
+  var h = Math.floor(n/100), t = Math.floor((n%100)/10), u = n%10;
+  var hasLower = (t>0 || u>0);
+  if (h>0) s += lwUnit(h) + 'ແສນ';
+  if (hasLower){
+    if (t===1) s += 'ສິບ';
+    else if (t===2) s += 'ຊາວ';
+    else if (t>=3 && t<=9) s += lwUnit(t) + 'ສິບ';
+    if (u>0) s += (u===1 && t>0) ? 'ເອັດ' : lwUnit(u);
+    s += 'ພັນ';
+  }
+  return s;
+}
+
+function lwGroup(n){
+  var vTue = Math.floor(n/1000000000); n -= vTue*1000000000;
+  var vLan = Math.floor(n/1000000);    n -= vLan*1000000;
+  var vPan = Math.floor(n/1000);
+  var vUni = n - vPan*1000;
+  var result = '';
+  if (vTue>0){ if(result) result+=' '; result += lw6digit(vTue) + 'ຕື້'; }
+  if (vLan>0){ if(result) result+=' '; result += lw3digit(vLan,false) + 'ລ້ານ'; }
+  if (vPan>0){ if(result) result+=' '; result += lwPanGroup(vPan); }
+  if (vUni>0){ if(result) result+=' '; result += lw3digit(vUni,false); }
+  return result + ' ';
+}
+
+function numToLaoMoneyWords(n){
+  n = Number(n) || 0;
+  var abs = Math.abs(n);
+  var iP = Math.floor(abs);
+  var dP = Math.floor((abs - iP)*100 + 0.5);
+  if (n===0) return '( ສູນ ກີບ )';
+  if (dP>0) return '( ' + lwGroup(iP) + 'ກີບ ' + lwGroup(dP) + 'ອັດ )';
+  return '( ' + lwGroup(iP) + 'ກີບ )';
+}
 
 // ================================================================
 // INIT
@@ -570,6 +629,7 @@ function clearForm(){
   document.getElementById('chk-none').checked=true;
   styleFreight();
   document.getElementById('msg').className='msg';
+  updateCodWords();
 }
 
 // ================================================================
@@ -578,6 +638,13 @@ function clearForm(){
 function toggleCOD(){
   var pay = radio('g-pay');
   document.getElementById('cod-row').style.display = pay==='COD' ? '' : 'none';
+}
+
+function updateCodWords(){
+  var el = document.getElementById('f-cod-words');
+  var val = document.getElementById('f-cod').value;
+  if (!val || isNaN(val) || Number(val) <= 0) { el.textContent = ''; return; }
+  el.textContent = numToLaoMoneyWords(Number(val));
 }
 
 function onProductChange(){
@@ -595,6 +662,7 @@ function onProductChange(){
   if (price && radio('g-pay')==='COD') {
     document.getElementById('f-cod').value = price;
   }
+  updateCodWords();
 }
 
 // ── ຂົນສົ່ງ: ເພີ່ມ/ພິມເອງ + ປ່ຽນຮູບ ──
@@ -684,7 +752,7 @@ function changeShipImage(evt, inputEl){
 }
 
 function styleFreight(){
-  var ids = [['lbl-origin','chk-origin'],['lbl-dest','chk-dest'],['lbl-none','chk-none']];
+  var ids = [['lbl-origin','chk-origin'],['lbl-none','chk-none']];
   ids.forEach(function(pair){
     var lbl = document.getElementById(pair[0]);
     var checked = document.getElementById(pair[1]).checked;
@@ -709,7 +777,7 @@ function drawBill(d, targetCanvas) {
   add('dash','',0,LH_DASH);
   add('text','ວັນທີ: '+d.date,     FS_SMALL, LH_SMALL, 'left',false);
   add('dash','',0,LH_DASH);
-  add('text','ຊື່    : '+d.name,   FS_NORMAL,LH_NORMAL,'left',true);
+  add('text','ຊື່ລູກຄ້າ: '+d.name, FS_NORMAL,LH_NORMAL,'left',true);
   add('text','ເບີ   : '+d.phone,   FS_NORMAL,LH_NORMAL,'left',false);
   if (d.village)  add('text','ບ້ານ  : '+d.village,  FS_NORMAL,LH_NORMAL,'left',false);
   if (d.district) add('text','ເມືອງ: '+d.district,  FS_NORMAL,LH_NORMAL,'left',false);
@@ -722,10 +790,12 @@ function drawBill(d, targetCanvas) {
 
   if (d.payType==='COD'){
     // COD — ສະແດງກ່ອງເກັບເງິນ
-    var cod = d.cod ? parseInt(d.cod).toLocaleString('lo-LA')+' ກີບ' : '(ບໍ່ລະບຸ)';
+    var codNum = d.cod ? parseInt(d.cod) : 0;
+    var cod = d.cod ? codNum.toLocaleString('lo-LA')+' ກີບ' : '(ບໍ່ລະບຸ)';
     add('gap','',0,LH_GAP);
     add('cod_label','ເກັບປາຍທາງ (COD)',FS_SMALL,LH_SMALL,'center',false);
     add('cod_amt',cod,                  FS_COD,  60,      'center',true);
+    if (d.cod) add('cod_words', numToLaoMoneyWords(codNum), FS_SMALL, LH_SMALL, 'center', false);
     add('gap','',0,LH_GAP);
   } else {
     // ຈ່າຍແລ້ວ — ສະແດງ stamp
@@ -736,7 +806,7 @@ function drawBill(d, targetCanvas) {
 
   add('dash','',0,LH_DASH);
   add('gap','',0,LH_GAP);
-  add('text','ຂອບໃຈທີ່ໃຊ້ TN WAX Store',FS_SMALL,LH_SMALL,'center',false);
+  add('text','ຂອບໃຈທີ່ໃຊ້ສິນຄ້າຮ້ານເຮົາ',FS_SMALL,LH_SMALL,'center',false);
   add('text','★ ຂໍໃຫ້ລ້ຳລວຍເງິນຄຳ ★',  FS_SMALL,LH_SMALL,'center',false);
   add('gap','',0,LH_GAP);
   add('qr','ສະແກນເບິ່ງສິນຄ້າ ແລະ ລາຄາ', FS_SMALL, QR_PRINT_SIZE+LH_SMALL+16, 'center',false);
@@ -814,7 +884,7 @@ function drawBill(d, targetCanvas) {
     var words=wrapText(ctx,l.text,contentW);
     words.forEach(function(line,i){ctx.fillText(line,x,y+i*l.lh);});
     y+=l.lh*(words.length||1);
-    if(l.type==='cod_amt') codBoxH=(y+6)-codBoxY;
+    if(l.type==='cod_amt'||l.type==='cod_words') codBoxH=(y+6)-codBoxY;
   });
 
   if(codBoxY>=0&&codBoxH>0){
