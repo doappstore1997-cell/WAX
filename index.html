@@ -149,10 +149,13 @@ body { font-family:'Noto Sans Lao','Phetsarath OT',Arial,sans-serif; background:
 .mbox h3 { font-size:clamp(0.88rem,2vw,1rem); margin-bottom:10px; color:#1e293b; flex-shrink:0; }
 .mscroll { flex:1; overflow-y:auto; border:1px solid #e2e8f0; border-radius:8px; min-height:0; }
 .mscroll canvas { display:block; width:100%; }
-.mbtns { display:flex; gap:8px; margin-top:10px; flex-shrink:0; }
+.mbtns { display:flex; gap:8px; margin-top:8px; flex-shrink:0; }
 .mbtns button { flex:1; padding:clamp(9px,2vw,11px); border-radius:8px; font-size:clamp(0.85rem,2vw,0.92rem); font-weight:600; cursor:pointer; border:none; font-family:inherit; touch-action:manipulation; min-height:44px; }
 .mb-print  { background:#2ecc71; color:white; }
+.mb-save   { background:#3b82f6; color:white; }
+.mb-direct { background:#f59e0b; color:white; font-size:clamp(0.76rem,1.8vw,0.82rem); }
 .mb-cancel { background:#f1f5f9; color:#475569; }
+.mb-hint   { font-size:.72rem; color:#94a3b8; text-align:center; margin-top:6px; }
 
 /* ── Desktop enhancement ── */
 @media(min-width:641px){
@@ -195,14 +198,14 @@ body { font-family:'Noto Sans Lao','Phetsarath OT',Arial,sans-serif; background:
   </div>
   <div class="phelp-link" onclick="togglePHelp()">❓ ຊອກຫາ / ເຊື່ອມຕໍ່ເຄື່ອງພິມບໍ່ໄດ້?</div>
   <div class="phelp" id="phelp">
-    <b>ວິທີແກ້ ຖ້າຊອກຫາເຄື່ອງພິມ Bluetooth ບໍ່ເຫັນ (Android):</b>
+    <b>ພິມບໍ່ອອກ / ຂຶ້ນຕົວອັກສອນແປກໆ? ໃຫ້ໃຊ້ວິທີ "ພິມເປັນຮູບ PNG" ແທນ:</b>
     <ol>
-      <li>ບໍ່ຈຳເປັນຕ້ອງໄປຈັບຄູ່ (Pair) ໃນການຕັ້ງຄ່າໂທລະສັບກ່ອນອີກຕໍ່ໄປ — ກົດ <b>🔵 ເຊື່ອມຕໍ່ Printer</b> ຫຼື <b>ບັນທຶກ + ພິມ</b> ໄດ້ເລີຍ, ລະບົບຈະເປີດປ໋ອບອັບໃຫ້ເລືອກເຄື່ອງພິມທັນທີ.</li>
-      <li>ເປີດ <b>Bluetooth</b> ຂອງໂທລະສັບໄວ້ ແລະ ເປີດເຄື່ອງພິມ (ໄຟສະຖານະຕິດ) ກ່ອນກົດເຊື່ອມຕໍ່.</li>
-      <li>ຖ້າໃນລາຍການປ໋ອບອັບບໍ່ເຫັນຊື່ເຄື່ອງພິມ: ຍ້າຍໂທລະສັບເຂົ້າໃກ້ເຄື່ອງພິມ, ລອງປິດ-ເປີດ Bluetooth ຂອງໂທລະສັບໃໝ່, ຫຼືລອງປິດ-ເປີດເຄື່ອງພິມໃໝ່ ແລ້ວກົດເຊື່ອມຕໍ່ອີກຄັ້ງ.</li>
-      <li>ຖ້າເຄື່ອງພິມກຳລັງເຊື່ອມຕໍ່ກັບແອັບອື່ນ ຫຼືໂທລະສັບເຄື່ອງອື່ນຢູ່ (ເຊັ່ນ: ແອັບພິມສະເພາະ) ໃຫ້ປິດການເຊື່ອມຕໍ່ນັ້ນກ່ອນ, ເພາະເຄື່ອງພິມສ່ວນຫຼາຍຮັບການເຊື່ອມຕໍ່ໄດ້ເທື່ອລະໜຶ່ງອຸປະກອນເທົ່ານັ້ນ.</li>
+      <li>ກົດ <b>👁 Preview</b> → ໃນປ໋ອບອັບກົດ <b>🖨 ພິມເລີຍ (ຮູບ PNG)</b> — ລະບົບຈະສ້າງໃບບິນເປັນຮູບພາບກ່ອນ ບໍ່ໄດ້ສົ່ງໂຄ້ດຕົວອັກສອນຊື່ໆໄປເຄື່ອງພິມ (ນີ້ຄືສາເຫດທີ່ພິມແລ້ວເປັນຕົວອັກສອນແປກໆ/ພາສາຕ່າງດ້າວ).</li>
+      <li>ຖ້າມືຖືຂຶ້ນໜ້າຈໍ "ແຊຣ໌" (Share) — ໃຫ້ເລືອກແອັບພິມເຄື່ອງພິມບີລູທູດຂອງທ່ານ (ເຊັ່ນ Thermer, RawBT, Loyverse ຫຼືແອັບຂອງຍີ່ຫໍ້ເຄື່ອງພິມ) ແລ້ວກົດພິມໃນແອັບນັ້ນ — ຮູບພາບຈະພິມອອກຖືກຕ້ອງສະເໝີ ບໍ່ວ່າຈະເປັນຕົວອັກສອນລາວ.</li>
+      <li>ຖ້າບໍ່ຂຶ້ນໜ້າຈໍ Share (ເຊັ່ນ ຄອມພິວເຕີ): ລະບົບຈະເປີດຮູບບິນຢູ່ແທັບໃໝ່ ໃຫ້ກົດປຸ່ມ <b>🖨 ພິມ / Print</b> ໃນໜ້ານັ້ນ ຫຼືກົດ <b>💾 ບັນທຶກຮູບ</b> ເພື່ອເກັບຮູບໄວ້ພິມພາຍຫຼັງ.</li>
+      <li>ປຸ່ມ <b>⚡ BT ກົງ</b> ແມ່ນວິທີເກົ່າ (ສົ່ງໂຄ້ດພິມກົງໄປເຄື່ອງພິມຜ່ານ Bluetooth) — ໃຊ້ໄດ້ຖ້າເຄື່ອງພິມຂອງທ່ານຮອງຮັບ, ແຕ່ຖ້າພິມແລ້ວແປກໆ ໃຫ້ໃຊ້ວິທີຮູບ PNG ແທນ.</li>
     </ol>
-    <p class="warn">📱 ໝາຍເຫດ iPhone: Safari ຂອງ iPhone ບໍ່ຮອງຮັບການພິມຜ່ານ Bluetooth ຈາກເວັບໄຊທ໌ໄດ້ (ຂໍ້ຈຳກັດຈາກ Apple ເອງ, ບໍ່ແມ່ນຈາກລະບົບຮ້ານ) — ກະລຸນາໃຊ້ໂທລະສັບ Android (Chrome) ຫຼືຄອມພິວເຕີ Chrome/Edge ແທນ.</p>
+    <p class="warn">📱 ໝາຍເຫດ iPhone: Safari ຂອງ iPhone ບໍ່ຮອງຮັບການພິມກົງຜ່ານ Bluetooth ຈາກເວັບໄຊທ໌ (ຂໍ້ຈຳກັດຈາກ Apple) — ແຕ່ວິທີ <b>ພິມເປັນຮູບ PNG</b> ຂ້າງເທິງໃຊ້ໄດ້ປົກກະຕິຜ່ານ Share ຫຼືປຸ່ມພິມ, ບໍ່ຈຳເປັນຕ້ອງໃຊ້ Android.</p>
   </div>
 
   <div class="tabs">
@@ -384,7 +387,10 @@ body { font-family:'Noto Sans Lao','Phetsarath OT',Arial,sans-serif; background:
 
   <div id="tab-hist" class="tc">
     <div class="card">
-      <div class="ct">ຄຳສັ່ງລ່າສຸດ</div>
+      <div class="ct" style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+        <span>ຄຳສັ່ງລ່າສຸດ (ຈາກ Google Sheet)</span>
+        <span onclick="renderHistory()" style="font-size:.78rem;color:#7c3aed;text-decoration:underline;cursor:pointer;font-weight:600">🔄 ໂຫລດຄືນ</span>
+      </div>
       <div id="hiList"><p style="color:#94a3b8;font-size:.85rem">ຍັງບໍ່ມີຂໍ້ມູນ</p></div>
     </div>
   </div>
@@ -395,9 +401,16 @@ body { font-family:'Noto Sans Lao','Phetsarath OT',Arial,sans-serif; background:
     <h3>👁 Preview ບິນ</h3>
     <div class="mscroll"><canvas id="prevCanvas"></canvas></div>
     <div class="mbtns">
-      <button class="mb-print"  onclick="confirmPrint()">🖨 ພິມເລີຍ</button>
+      <button class="mb-print" onclick="confirmPrintPNG()">🖨 ພິມເລີຍ (ຮູບ PNG)</button>
+    </div>
+    <div class="mbtns">
+      <button class="mb-save"   onclick="saveBillImage()">💾 ບັນທຶກຮູບ</button>
+      <button class="mb-direct" onclick="confirmPrint()">⚡ BT ກົງ</button>
+    </div>
+    <div class="mbtns">
       <button class="mb-cancel" onclick="closeModal()">ຍົກເລີກ</button>
     </div>
+    <div class="mb-hint">💡 ແນະນຳໃຫ້ໃຊ້ "ພິມເລີຍ (ຮູບ PNG)" — ພິມຖືກຕ້ອງສະເໝີ ບໍ່ເປັນຕົວອັກສອນແປກໆ</div>
   </div>
 </div>
 
@@ -1120,11 +1133,14 @@ async function saveAndPrint(){
     try{await fetch(SHEET_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)});}catch(e){}
   }
   saveHistory(d);
-  if(!printerOK){
-    await connectPrinter();          // ເປີດປ໋ອບອັບເລືອກເຄື່ອງພິມທັນທີ (ບໍ່ຕ້ອງກົດເຊື່ອມຕໍ່ລ່ວງໜ້າ)
-    if(!printerOK){btn.disabled=false;return;}
+  showMsg('🖨 ກຳລັງສ້າງຮູບບິນ...','ld');
+  try{
+    var r = await shareOrPrintPNG(d);
+    showMsg(r==='shared' ? '✅ ສົ່ງຮູບບິນສຳເລັດ — ເລືອກແອັບພິມແລ້ວກົດພິມ' : '✅ ເປີດຮູບບິນ — ກົດປຸ່ມພິມໃນໜ້າຕ່າງໃໝ່','ok');
+  }catch(e){
+    if(e && e.name==='AbortError'){ showMsg('','ok'); }
+    else showMsg('❌ '+((e&&e.message)||e),'er');
   }
-  await doPrint(d);
   btn.disabled=false;
 }
 
@@ -1170,22 +1186,130 @@ async function doPrint(d){
 }
 
 // ================================================================
+// PNG-BASED PRINT (ແກ້ບັນຫາພິມແລ້ວເປັນຕົວອັກສອນແປກໆ)
+// ສ້າງໃບບິນເປັນຮູບພາບ PNG ກ່ອນ ແລ້ວສົ່ງໄປພິມຜ່ານ Share/Print — ບໍ່ສົ່ງໂຄ້ດ ESC/POS ດິບ
+// ================================================================
+function billCanvas(d){
+  var cv=document.createElement('canvas');
+  drawBill(d,cv);
+  return cv;
+}
+function canvasToPNGBlob(cv){
+  return new Promise(function(resolve,reject){
+    if(!cv.toBlob){ reject(new Error('ບຣາວເຊີນີ້ບໍ່ຮອງຮັບການສ້າງຮູບ')); return; }
+    cv.toBlob(function(blob){
+      if(blob) resolve(blob); else reject(new Error('ສ້າງຮູບບິນບໍ່ໄດ້'));
+    },'image/png');
+  });
+}
+function openImageForPrint(cv){
+  var dataUrl=cv.toDataURL('image/png');
+  var w=window.open('','_blank');
+  if(!w){ showMsg('⚠ Popup ຖືກບລັອກ — ອະນຸຍາດ popup ຂອງໜ້ານີ້ແລ້ວລອງໃໝ່','er'); return false; }
+  w.document.write('<!DOCTYPE html><html><head><meta charset="utf-8"><title>ໃບບິນ TN WAX Store</title>'+
+    '<style>body{margin:0;padding:16px;text-align:center;background:#f1f5f9;font-family:sans-serif}'+
+    'img{max-width:100%;border:1px solid #ccc;border-radius:4px}'+
+    '.pbtn{margin-top:14px;padding:12px 24px;font-size:16px;border:none;border-radius:8px;background:#2ecc71;color:#fff;font-weight:bold;cursor:pointer}'+
+    '@media print{.pbtn{display:none}body{background:#fff;padding:0}}</style></head><body>'+
+    '<img src="'+dataUrl+'" id="billimg"><br><button class="pbtn" onclick="window.print()">🖨 ພິມ / Print</button>'+
+    '</body></html>');
+  w.document.close();
+  return true;
+}
+async function shareOrPrintPNG(d){
+  await document.fonts.ready;
+  var cv=billCanvas(d);
+  var fname='bill_'+(d.phone||'tnwax').replace(/[^0-9a-zA-Z]/g,'')+'_'+(d.date||'').replace(/[^0-9]/g,'')+'.png';
+  if(navigator.share && navigator.canShare){
+    try{
+      var blob=await canvasToPNGBlob(cv);
+      var file=new File([blob],fname,{type:'image/png'});
+      if(navigator.canShare({files:[file]})){
+        await navigator.share({files:[file],title:'ໃບບິນ TN WAX Store',text:d.name||''});
+        return 'shared';
+      }
+    }catch(e){
+      if(e && e.name==='AbortError') throw e;   // ຜູ້ໃຊ້ກົດຍົກເລີກໜ້າ Share — ບໍ່ຕ້ອງ fallback
+      // ຖ້າ share ຜິດພາດແບບອື່ນ ໃຫ້ fallback ໄປເປີດຮູບແທນ
+    }
+  }
+  openImageForPrint(cv);
+  return 'opened';
+}
+async function confirmPrintPNG(){
+  if(!pending) return closeModal();
+  var d=pending;
+  saveHistory(d);
+  closeModal();
+  showMsg('🖨 ກຳລັງສ້າງຮູບບິນ...','ld');
+  try{
+    var r=await shareOrPrintPNG(d);
+    showMsg(r==='shared' ? '✅ ສົ່ງຮູບບິນສຳເລັດ — ເລືອກແອັບພິມ (Thermer/RawBT ແລ້ວກົດພິມ)' : '✅ ເປີດຮູບບິນແລ້ວ — ກົດປຸ່ມພິມໃນໜ້າຕ່າງໃໝ່','ok');
+  }catch(e){
+    if(e && e.name==='AbortError') return;
+    showMsg('❌ ສ້າງຮູບບິນບໍ່ໄດ້: '+((e&&e.message)||e),'er');
+  }
+}
+function saveBillImage(){
+  if(!pending) return closeModal();
+  var d=pending;
+  saveHistory(d);
+  document.fonts.ready.then(function(){
+    var cv=billCanvas(d);
+    var a=document.createElement('a');
+    a.download='bill_'+(d.phone||'tnwax').replace(/[^0-9a-zA-Z]/g,'')+'.png';
+    a.href=cv.toDataURL('image/png');
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    showMsg('✅ ບັນທຶກຮູບບິນແລ້ວ','ok');
+  });
+  closeModal();
+}
+
+// ================================================================
 // HISTORY
 // ================================================================
-function renderHistory(){
-  var h=JSON.parse(localStorage.getItem('tnwax_h')||'[]');
-  var el=document.getElementById('hiList');
-  if(!h.length){el.innerHTML='<p style="color:#94a3b8;font-size:.85rem">ຍັງບໍ່ມີຂໍ້ມູນ</p>';return;}
-  el.innerHTML=h.slice(0,30).map(function(d){
+function historyRowsHtml(list){
+  return list.map(function(d){
     return '<div class="hi">'+
-      '<div><div class="hn">'+d.name+'</div>'+
-      '<div class="hd">'+d.phone+' · '+(d.address||'-')+'</div>'+
-      '<div class="hd">'+d.shipping+' · '+d.date+'</div></div>'+
+      '<div><div class="hn">'+escapeHtml(d.name||'')+'</div>'+
+      '<div class="hd">'+escapeHtml(d.phone||'')+' · '+escapeHtml(d.address||'-')+'</div>'+
+      '<div class="hd">'+escapeHtml(d.shipping||'')+' · '+escapeHtml(d.date||'')+'</div></div>'+
       '<div style="text-align:right;flex-shrink:0">'+
-      '<span class="badge '+(d.payType==='COD'?'bc':'bp')+'">'+d.payType+'</span>'+
+      '<span class="badge '+(d.payType==='COD'?'bc':'bp')+'">'+escapeHtml(d.payType||'')+'</span>'+
       (d.cod?'<div style="font-weight:bold;font-size:.85rem;margin-top:3px">'+parseInt(d.cod).toLocaleString()+'₭</div>':'')+
       '</div></div>';
   }).join('');
+}
+function renderHistoryLocal(msgPrefix){
+  var el=document.getElementById('hiList');
+  var h=JSON.parse(localStorage.getItem('tnwax_h')||'[]');
+  if(!h.length){
+    el.innerHTML=(msgPrefix||'')+'<p style="color:#94a3b8;font-size:.85rem">ຍັງບໍ່ມີຂໍ້ມູນ</p>';
+    return;
+  }
+  el.innerHTML=(msgPrefix||'')+historyRowsHtml(h.slice(0,30));
+}
+function renderHistory(){
+  var el=document.getElementById('hiList');
+  if(!SHEET_URL){
+    renderHistoryLocal('<p style="color:#94a3b8;font-size:.82rem;margin-bottom:8px">ℹ ຍັງບໍ່ໄດ້ຕັ້ງ Google Sheet URL — ສະແດງປະຫວັດໃນເຄື່ອງນີ້ເທົ່ານັ້ນ</p>');
+    return;
+  }
+  el.innerHTML='<p style="color:#94a3b8;font-size:.85rem">⏳ ກຳລັງໂຫລດປະຫວັດຈາກ Google Sheet...</p>';
+  var sep = SHEET_URL.indexOf('?') >= 0 ? '&' : '?';
+  fetch(SHEET_URL + sep + 'action=orders')
+    .then(function(r){ return r.json(); })
+    .then(function(res){
+      var list = (res && res.orders) ? res.orders : [];
+      if(!list.length){
+        el.innerHTML='<p style="color:#94a3b8;font-size:.85rem">ຍັງບໍ່ມີຂໍ້ມູນໃນ Google Sheet</p>';
+        return;
+      }
+      el.innerHTML=historyRowsHtml(list.slice(0,30));
+    })
+    .catch(function(){
+      renderHistoryLocal('<p style="color:#b91c1c;font-size:.82rem;margin-bottom:8px">⚠ ໂຫລດປະຫວັດຈາກ Google Sheet ບໍ່ໄດ້ (ເຊັກອິນເຕີເນັດ/URL) — <span style="text-decoration:underline;cursor:pointer" onclick="renderHistory()">ລອງໃໝ່</span>. ສະແດງປະຫວັດໃນເຄື່ອງນີ້ແທນ:</p>');
+    });
 }
 </script>
 </body>
