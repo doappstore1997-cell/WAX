@@ -213,7 +213,7 @@ body { font-family:'Noto Sans Lao','Phetsarath OT',Arial,sans-serif; background:
   </div>
   <div class="pmode" id="pmode">
     <button class="pmode-btn" data-m="computer" onclick="setPrintMode('computer')">💻 ພິມຜ່ານຄອມພິວເຕີ (USB/BT)</button>
-    <button class="pmode-btn" data-m="mobile"   onclick="setPrintMode('mobile')">📱 ພິມຜ່ານມືຖື</button>
+    <button class="pmode-btn" data-m="mobile"   onclick="setPrintMode('mobile')">📱 ພິມຜ່ານມືຖື(ຕ້ອງມີແອັບThermerໃນມືຖື)</button>
   </div>
   <div class="pmode-hint" id="pmodeHint"></div>
   <div class="phelp-link" onclick="togglePHelp()">❓ ຊອກຫາ / ເຊື່ອມຕໍ່ເຄື່ອງພິມບໍ່ໄດ້?</div>
@@ -221,7 +221,7 @@ body { font-family:'Noto Sans Lao','Phetsarath OT',Arial,sans-serif; background:
     <b>ລະບົບພິມມີ 2 ແບບ — ເລືອກໂໝດຢູ່ດ້ານເທິງໃຫ້ຖືກກັບອຸປະກອນທີ່ໃຊ້:</b>
     <ol>
       <li><b>💻 ພິມຜ່ານຄອມພິວເຕີ (USB/Bluetooth):</b> ໃຊ້ໄດ້ທັງເຄື່ອງພິມທີ່ຕໍ່ຜ່ານສາຍ USB ແລະ ເຄື່ອງພິມ Bluetooth. ເລືອກໂໝດ 💻 ຄອມພິວເຕີ → ກົດ <b>👁 Preview</b> → ກົດ <b>🖨 ພິມຜ່ານຄອມພິວເຕີ</b> → ຖ້າມີ USB ລະບົບຈະໃຫ້ເລືອກ COM port ກ່ອນ (ໃຊ້ໄດ້ດີສຸດ, ໂຄ້ດແບບເກົ່າ ສົ່ງຄັ້ງດຽວ); ຖ້າຍົກເລີກ ຫຼືບໍ່ມີ USB ລະບົບຈະເປີດປ໋ອບອັບໃຫ້ເລືອກເຄື່ອງພິມ Bluetooth ແທນ. ໃຊ້ໄດ້ກັບ Google Chrome ຫຼື Microsoft Edge ເທົ່ານັ້ນ.</li>
-      <li><b>📱 ພິມຜ່ານມືຖື:</b> ກົດ <b>👁 Preview</b> → ກົດ <b>🖨 ພິມເລີຍ (ຮູບ PNG)</b> — ລະບົບຈະສ້າງໃບບິນເປັນຮູບພາບກ່ອນ ບໍ່ໄດ້ສົ່ງໂຄ້ດຕົວອັກສອນຊື່ໆໄປເຄື່ອງພິມ (ນີ້ຄືສາເຫດທີ່ພິມແລ້ວເປັນຕົວອັກສອນແປກໆ/ພາສາຕ່າງດ້າວ). ຖ້າມືຖືຂຶ້ນໜ້າຈໍ "ແຊຣ໌" (Share) ໃຫ້ເລືອກແອັບພິມ (Thermer, RawBT, Loyverse ຫຼືແອັບຂອງຍີ່ຫໍ້ເຄື່ອງພິມ) ແລ້ວກົດພິມ — ຮູບພາບຈະພິມອອກຖືກຕ້ອງສະເໝີ.</li>
+      <li><b>📱 ພິມຜ່ານມືຖື(ຕ້ອງມີແອັບThermerໃນມືຖື):</b> ກົດ <b>👁 Preview</b> → ກົດ <b>🖨 ພິມເລີຍ (ຮູບ PNG)</b> — ລະບົບຈະສ້າງໃບບິນເປັນຮູບພາບກ່ອນ ບໍ່ໄດ້ສົ່ງໂຄ້ດຕົວອັກສອນຊື່ໆໄປເຄື່ອງພິມ (ນີ້ຄືສາເຫດທີ່ພິມແລ້ວເປັນຕົວອັກສອນແປກໆ/ພາສາຕ່າງດ້າວ). ຖ້າມືຖືຂຶ້ນໜ້າຈໍ "ແຊຣ໌" (Share) ໃຫ້ເລືອກແອັບພິມ (Thermer, RawBT, Loyverse ຫຼືແອັບຂອງຍີ່ຫໍ້ເຄື່ອງພິມ) ແລ້ວກົດພິມ — ຮູບພາບຈະພິມອອກຖືກຕ້ອງສະເໝີ.</li>
       <li>ຖ້າບໍ່ຂຶ້ນໜ້າຈໍ Share: ລະບົບຈະເປີດຮູບບິນຢູ່ແທັບໃໝ່ ໃຫ້ກົດປຸ່ມ <b>🖨 ພິມ / Print</b> ໃນໜ້ານັ້ນ ຫຼືກົດ <b>💾 ບັນທຶກຮູບ</b> ເພື່ອເກັບຮູບໄວ້ພິມພາຍຫຼັງ.</li>
       <li>ປຸ່ມ <b>ພິມຜ່ານ BT ໂດຍກົງ</b> ໃນໂໝດມືຖື ແມ່ນສົ່ງໂຄ້ດພິມກົງໄປເຄື່ອງພິມຜ່ານ Bluetooth — ສ່ວນຫຼາຍບໍ່ແນະນຳ ເພາະມັກຟ້ອງ error, ຄວນໃຊ້ວິທີຮູບ PNG ແທນ (ພິມຖືກຕ້ອງສະເໝີ).</li>
     </ol>
@@ -425,7 +425,7 @@ body { font-family:'Noto Sans Lao','Phetsarath OT',Arial,sans-serif; background:
       <button class="mb-computer" onclick="computerPrint()">🖨 ພິມຜ່ານຄອມພິວເຕີ (USB/BT)</button>
     </div>
 
-    <div class="mb-section">📱 ພິມຜ່ານມືຖື</div>
+    <div class="mb-section">📱 ພິມຜ່ານມືຖື(ຕ້ອງມີແອັບThermerໃນມືຖື)</div>
     <div class="mbtns">
       <button class="mb-print" onclick="confirmPrintPNG()">🖨 ພິມເລີຍ (ຮູບ PNG)</button>
     </div>
@@ -514,7 +514,7 @@ window.onload = function () {
     var hasSerial = ('serial' in navigator);
     if (!hasBT && !hasSerial) {
       if (isIOS) {
-        setPUI('er','iPhone (Safari) ບໍ່ຮອງຮັບການພິມກົງ — ໃຊ້ "📱 ພິມຜ່ານມືຖື (ຮູບ PNG)" ໃນ Preview ແທນ');
+        setPUI('er','iPhone (Safari) ບໍ່ຮອງຮັບການພິມກົງ — ໃຊ້ "📱 ພິມຜ່ານມືຖື(ຕ້ອງມີແອັບThermerໃນມືຖື) (ຮູບ PNG)" ໃນ Preview ແທນ');
       } else {
         setPUI('er','ບຣາວເຊີນີ້ບໍ່ຮອງຮັບການເຊື່ອມຕໍ່ Printer ໂດຍກົງ — ໃຊ້ Google Chrome ຫຼືພິມແບບຮູບ PNG');
       }
@@ -649,7 +649,7 @@ function connectPrinter() {
     if ('bluetooth' in navigator) return connectPrinterBT();
     if ('serial' in navigator) return connectPrinterSerial();
   }
-  showMsg('❌ ອຸປະກອນ/ບຣາວເຊີນີ້ບໍ່ຮອງຮັບການເຊື່ອມຕໍ່ Printer ໂດຍກົງ — ລອງໃຊ້ "📱 ພິມຜ່ານມືຖື (ຮູບ PNG)" ແທນ','er');
+  showMsg('❌ ອຸປະກອນ/ບຣາວເຊີນີ້ບໍ່ຮອງຮັບການເຊື່ອມຕໍ່ Printer ໂດຍກົງ — ລອງໃຊ້ "📱 ພິມຜ່ານມືຖື(ຕ້ອງມີແອັບThermerໃນມືຖື) (ຮູບ PNG)" ແທນ','er');
   return Promise.resolve();
 }
 function disconnectPrinter(){
@@ -974,6 +974,28 @@ function drawHeartIcon(ctx, cx, cy, s){
   ctx.fill();
   ctx.restore();
 }
+// ແຕ້ມຮູບຫົວໃຈເສັ້ນຂອບ (ບໍ່ທາສີພາຍໃນ) — cx,cy = ຈຸດກາງ, s = ຂະໜາດ, rot = ອົງສາຫັນ(radian)
+function drawHeartOutline(ctx, cx, cy, s, rot){
+  ctx.save();
+  ctx.translate(cx, cy);
+  if (rot) ctx.rotate(rot);
+  ctx.strokeStyle = '#000';
+  ctx.lineWidth = Math.max(1.5, s*0.15);
+  ctx.lineJoin = 'round';
+  ctx.beginPath();
+  ctx.moveTo(0, 0.32*s);
+  ctx.bezierCurveTo(-0.58*s, -0.14*s, -0.30*s, -0.56*s, 0, -0.20*s);
+  ctx.bezierCurveTo(0.30*s, -0.56*s, 0.58*s, -0.14*s, 0, 0.32*s);
+  ctx.closePath();
+  ctx.stroke();
+  ctx.restore();
+}
+// ຮູບຫົວໃຈຊ້ອນກັນ 3 ຫົວ (2 ຫົວໃຫຍ່ຊ້ອນ + 1 ຫົວນ້ອຍ) ຄ້າຍຮູບຕົວຢ່າງ — cx,cy = ຈຸດກາງໂດຍລວມ, s = ຂະໜາດລວມ
+function drawLayeredHearts(ctx, cx, cy, s){
+  drawHeartOutline(ctx, cx-0.20*s, cy-0.06*s, 0.72*s, -0.32);
+  drawHeartOutline(ctx, cx+0.15*s, cy-0.06*s, 0.72*s,  0.30);
+  drawHeartOutline(ctx, cx+0.36*s, cy+0.38*s, 0.34*s,  0.05);
+}
 function drawBill(d, targetCanvas) {
   var lines = [];
   function add(type,text,fs,lh,align,bold,extra){lines.push({type:type||'text',text:text||'',fs:fs,lh:lh,align:align||'left',bold:!!bold,extra:extra||null});}
@@ -1013,7 +1035,7 @@ function drawBill(d, targetCanvas) {
 
   add('dash','',0,LH_DASH);
   add('gap','',0,LH_GAP);
-  add('text','ຂອບໃຈທີ່ໃຊ້ສິນຄ້າຮ້ານເຮົາ',FS_SMALL,LH_SMALL,'center',false);
+  add('thankshearts','ຂອບໃຈທີ່ໃຊ້ສິນຄ້າຮ້ານເຮົາ',FS_SMALL,LH_SMALL*1.55,'center',false);
   add('wish','ຂໍໃຫ້ລ້ຳລວຍເງິນຄຳ',  FS_SMALL,LH_SMALL*1.9,'center',false);
   add('gap','',0,LH_GAP*4);
 
@@ -1050,6 +1072,26 @@ function drawBill(d, targetCanvas) {
       ctx.save();ctx.setLineDash([4,4]);ctx.strokeStyle='#000';ctx.lineWidth=1;
       ctx.beginPath();ctx.moveTo(PAD,y+l.lh/2);ctx.lineTo(PRINT_W-PAD,y+l.lh/2);ctx.stroke();
       ctx.restore();y+=l.lh;return;
+    }
+
+    // "ຂອບໃຈທີ່ໃຊ້ສິນຄ້າຮ້ານເຮົາ" — ຮູບຫົວໃຈຊ້ອນກັນ ຢູ່ທາງໜ້າ ແລະ ທາງຫຼັງຂໍ້ຄວາມ
+    if(l.type==='thankshearts'){
+      var textTop2 = y + (l.lh - FS_SMALL)/2 - FS_SMALL*0.15;
+      ctx.font=(l.bold?'bold ':'')+FS_SMALL+'px '+FONT_FAMILY;
+      ctx.textAlign='left'; ctx.textBaseline='top';
+      var tw3 = ctx.measureText(l.text).width;
+      var hs = FS_SMALL*1.7;           // ຂະໜາດຮູບຫົວໃຈຊ້ອນ
+      var gp3 = 9;                     // ໄລຍະຫ່າງລະຫວ່າງຮູບ-ໂຕໜັງສື
+      var totalW3 = hs+gp3+tw3+gp3+hs;
+      var sx3 = PRINT_W/2 - totalW3/2;
+      var heartCY = textTop2 + FS_SMALL*0.55;
+      // ຮູບຫົວໃຈຊ້ອນ — ທາງໜ້າ(ຊ້າຍ)ຂໍ້ຄວາມ
+      drawLayeredHearts(ctx, sx3+hs*0.35, heartCY, hs);
+      // ໂຕໜັງສືກາງ
+      ctx.fillText(l.text, sx3+hs+gp3, textTop2);
+      // ຮູບຫົວໃຈຊ້ອນ — ທາງຫຼັງ(ຂວາ)ຂໍ້ຄວາມ
+      drawLayeredHearts(ctx, sx3+hs+gp3+tw3+gp3+hs*0.35, heartCY, hs);
+      y+=l.lh; return;
     }
 
     // "ຂໍໃຫ້ລ້ຳລວຍເງິນຄຳ" — ໂຕນົກຄູ່ຮັກຫັນຫນ້າເຂົ້າຫາກັນ ຢູ່ຂ້າງຊ້າຍ-ຂວາ + ຮູບຫົວໃຈນ້ອຍໆຢູ່ເທິງ
@@ -1430,7 +1472,7 @@ async function computerPrint(){
   closeModal();
   var hasSerial = ('serial' in navigator), hasBT = ('bluetooth' in navigator);
   if (!hasSerial && !hasBT) {
-    showMsg('❌ Browser ນີ້ບໍ່ຮອງຮັບການພິມຜ່ານ USB ຫຼື Bluetooth — ກະລຸນາໃຊ້ Google Chrome ຫຼື Microsoft Edge ເທິງຄອມພິວເຕີ, ຫຼືໃຊ້ "📱 ພິມຜ່ານມືຖື" ແທນ','er');
+    showMsg('❌ Browser ນີ້ບໍ່ຮອງຮັບການພິມຜ່ານ USB ຫຼື Bluetooth — ກະລຸນາໃຊ້ Google Chrome ຫຼື Microsoft Edge ເທິງຄອມພິວເຕີ, ຫຼືໃຊ້ "📱 ພິມຜ່ານມືຖື(ຕ້ອງມີແອັບThermerໃນມືຖື)" ແທນ','er');
     return;
   }
   if (!printerOK) {
